@@ -25,7 +25,7 @@ SECRET_KEY = 'ce9dy%b)#u+$dx_7-v8@8iv$fiikln=37bbt6+t552=le*5!pn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['add2z.ca', 'www.add2z.ca']
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -119,9 +119,5 @@ def ip_addresses():
     return ip_list
 
 # Discover our IP address
-ALLOWED_HOSTS += ip_addresses()
+# ALLOWED_HOSTS += ip_addresses()
 
-
-# Override production variables if DJANGO_DEVELOPMENT env variable is set
-if os.environ.get('DJANGO_DEVELOPMENT') is not None:
-    from settings_dev import *
