@@ -25,7 +25,7 @@ SECRET_KEY = 'ce9dy%b)#u+$dx_7-v8@8iv$fiikln=37bbt6+t552=le*5!pn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['add2z.ca', 'www.add2z.ca']
+ALLOWED_HOSTS = ['add2z.ca', 'www.add2z.ca', 'localhost']
 
 
 # Application definition
