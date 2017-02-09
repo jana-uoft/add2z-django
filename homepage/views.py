@@ -1,3 +1,9 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+context = {"STATIC_URL" : "https://storage.googleapis.com/add2z/homepage/"}
+
+
+
+def index(request):
+	return render(request, 'homepage/index.html', context)

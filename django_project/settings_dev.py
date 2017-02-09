@@ -38,7 +38,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'homepage',
     'directory',
+    'classified',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -46,6 +48,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
+    'storages',
 )
 
 SITE_ID = 2
@@ -136,3 +139,11 @@ def ip_addresses():
 
 # Discover our IP address
 # ALLOWED_HOSTS+= ip_addresses()
+
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gs.GSBotoStorage'
+GS_ACCESS_KEY_ID = 'GOOGX6435EWNWMOKV552'
+GS_SECRET_ACCESS_KEY = 'bjX44UUmYPxvD/wO/HHr4bP0Ohwm11mIu6enL7HU'
+GS_BUCKET_NAME = 'add2z'
+STATICFILES_STORAGE = 'storages.backends.gs.GSBotoStorage'
+
