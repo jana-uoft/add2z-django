@@ -1,0 +1,29 @@
+{% extends 'classified/base.html' %}
+
+{% block title %} 
+	Add2Z Classifieds 
+{% endblock %}
+
+
+{% block main-content %}
+
+	<div class="col-lg-12 content-box ">
+		{% include 'classified/featured_listings.html' %}
+	</div>
+
+	<div class="row">
+		<div class="col-sm-9 page-content col-thin-right">
+			{% include 'classified/category_browse.html' %}
+		</div>
+
+		<div class="col-sm-3 page-sidebar col-thin-left">
+			{% include 'classified/directory_listings.html' %}
+		</div>
+	</div> <!-- /.row-->
+
+{% endblock %}
+
+
+{% block sponsor-content %}
+	{% include 'classified/sponsors.html' %}	
+{% endblock %}

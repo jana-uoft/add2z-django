@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+		<title>{% block title %} {% endblock %}</title>
+		{% include 'classified/load_styles.html' %}
+	</head>
+
+	<body>
+
+		<div id="wrapper">
+
+			{% include 'classified/navigation.html' %}
+
+			{% include 'classified/search_bar.html' %}
+
+			<div class="main-container" style="padding: 0px">
+			    <div class="container">
+			    	{% block main-content %} {% endblock %}
+			    </div>
+			</div>
+
+			{% block sponsor-content %} {% endblock %}
+
+			{% include 'classified/footer.html' %}
+
+		</div>
+
+		{% include 'classified/load_scripts.html' %}
+
+	</body>
+
+</html>
