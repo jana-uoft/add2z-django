@@ -106,3 +106,4 @@ build/
 tests/report/
 db.sqlite3
 settings.py.orig
+migrations

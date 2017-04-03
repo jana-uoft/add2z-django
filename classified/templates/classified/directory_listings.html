@@ -1,10 +1,30 @@
-<aside>
-    <div class="inner-box">
-        <h2 class="title-2">Featured Businesses </h2>
+{% load staticfiles %}
+{% load humanize %}
 
-        <div class="inner-box-content">
-        	SLIDE SHOW OF DIRECTORY ADS
+
+
+
+
+<div class="inner-box relative"  style="margin-bottom: 10px; padding-bottom: 0px; padding-top: 0px;">
+    <h2 class="title-2"  style="margin-bottom: 0px; border-bottom: 0px;">Featured Businesses
+        <a id="nextItem" class="link  pull-right carousel-nav"> <i class="icon-right-open-big"></i></a>
+        <a id="prevItem" class="link pull-right carousel-nav"> <i class="icon-left-open-big"></i></a>
+    </h2>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="no-margin item-carousel owl-carousel owl-theme">
+                {% for listing in TOP_OF_THE_PAGE_LISTINGS %}
+                <div class="item">
+                    <a href="{% url 'classified:listing' listing.id %}">
+                        <span class="item-carousel-thumb">
+                            <img class="img-responsive" src="{{listing.photos}}" alt="{{listing.title}}">
+                        </span>
+                        <span class="item-name"> {{listing.title}} </span>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-
-</aside>
+</div>

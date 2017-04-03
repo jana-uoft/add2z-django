@@ -1,25 +1,26 @@
+{% load staticfiles %}
 
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- Fav and touch icons -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{STATIC_URL}}assets/ico/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{STATIC_URL}}assets/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{STATIC_URL}}assets/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed" href="{{STATIC_URL}}assets/ico/apple-touch-icon-57-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'classifieds/assets/ico/apple-touch-icon-144-precomposed.png' %}">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'classifieds/assets/ico/apple-touch-icon-114-precomposed.png' %}">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'classifieds/assets/ico/apple-touch-icon-72-precomposed.png' %}">
+<link rel="apple-touch-icon-precomposed" href="{% static 'classifieds/assets/ico/apple-touch-icon-57-precomposed.png' %}">
 
-<link rel="shortcut icon" href="{{STATIC_URL}}assets/ico/favicon.png">
+<link rel="shortcut icon" href="{% static 'classifieds/assets/ico/favicon.png' %}">
 
 <!-- Bootstrap core CSS -->
-<link href="{{STATIC_URL}}assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="{% static 'classifieds/assets/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
 <!-- Custom styles for this template -->
-<link href="{{STATIC_URL}}assets/css/style.css" rel="stylesheet">
+<link href="{% static 'classifieds/assets/css/style.css' %}" rel="stylesheet">
 
 <!-- styles needed for carousel slider -->
-<link href="{{STATIC_URL}}assets/css/owl.carousel.css" rel="stylesheet">
-<link href="{{STATIC_URL}}assets/css/owl.theme.css" rel="stylesheet">
+<link href="{% static 'classifieds/assets/css/owl.carousel.css' %}" rel="stylesheet">
+<link href="{% static 'classifieds/assets/css/owl.theme.css' %}" rel="stylesheet">
 
 <!-- Just for debugging purposes. -->
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -34,7 +35,7 @@
         elements: true
     };
 </script>
-<script src="{{STATIC_URL}}assets/js/pace.min.js"></script>
+<script src="{% static 'classifieds/assets/js/pace.min.js' %}"></script>
 
 
 

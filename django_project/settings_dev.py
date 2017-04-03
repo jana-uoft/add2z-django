@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'homepage',
     'directory',
     'classified',
@@ -118,7 +119,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # Allow Django from all hosts. This snippet is installed from
 # /var/lib/digitalocean/allow_hosts.py
@@ -145,5 +146,8 @@ DEFAULT_FILE_STORAGE = 'storages.backends.gs.GSBotoStorage'
 GS_ACCESS_KEY_ID = 'GOOGX6435EWNWMOKV552'
 GS_SECRET_ACCESS_KEY = 'bjX44UUmYPxvD/wO/HHr4bP0Ohwm11mIu6enL7HU'
 GS_BUCKET_NAME = 'add2z'
-STATICFILES_STORAGE = 'storages.backends.gs.GSBotoStorage'
+# STATICFILES_STORAGE = 'storages.backends.gs.GSBotoStorage'
+
+STATIC_URL = 'https://storage.googleapis.com/add2z/'
+STATIC_ROOT = 'https://storage.googleapis.com/add2z/'
 
