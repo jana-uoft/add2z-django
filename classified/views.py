@@ -15,19 +15,24 @@ for sub_category in AdSubCategory.objects.all():
 def index(request):
 	context = {	'TOP_OF_THE_PAGE_LISTINGS': TOP_OF_THE_PAGE_LISTINGS,
 				'AD_CATEGORIES': AD_CATEGORIES}
-	return render(request, 'classified/home.html', context)
+	return render(request, 'classified/home/home.html', context)
 
 
 def listings(request):
-	return render(request, 'classified/listings.html', {})
+	return render(request, 'classified/listings/listings.html', {})
 
 
 def listing(request, listing_id):
-	if (listing_id=='1'):
-		return render(request, 'classified/listing_other.html', {})
-	elif (listing_id=='2'):
-		return render(request, 'classified/listing_property.html', {})
-	elif (listing_id=='3'):
-		return render(request, 'classified/listing_auto.html', {})
-	else:
-		return render(request, 'classified/listing_job.html', {})
+	advertisement = Advertisement.objects.get(pk=listing_id)
+	ALL_PHOTOS = advertisement.photos.split(",")
+	try :
+		META = AdvertisementMeta.objects.get(advertisement=advertisement).__dict__
+		del META['_state']
+		del META['id']
+		del META['advertisement_id']
+		print META
+	except:
+		META = None
+	return render(request, 'classified/listing/listing.html', {'advertisement': advertisement,
+																'ALL_PHOTOS': ALL_PHOTOS,
+																'META': META})

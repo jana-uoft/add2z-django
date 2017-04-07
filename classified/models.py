@@ -89,47 +89,46 @@ class Advertisement(models.Model):
     location = models.TextField(blank=True, null=True)
     postal_code = models.CharField(max_length=7, validators=[RegexValidator(r'^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvxy] ?[0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvxy][0-9]$', "Invalid Postal Code")])
     package = models.ForeignKey(AdPackage)
-    photos =models.TextField(blank=True, null=True)
+    photos = models.TextField(blank=True, null=True)
     video = models.TextField(blank=True, null=True)
     visits = models.IntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     approved = models.BooleanField(default=False)
+    thumbnail = models.CharField(max_length=1000, blank=True, null=True)
+    website = models.CharField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
         return self.title
 
 
-class AutomotiveMeta(models.Model):
-    advertisment = models.OneToOneField(Advertisement)
+class AdvertisementMeta(models.Model):
+    advertisement = models.OneToOneField(Advertisement)
     condition = models.CharField(max_length=25, blank=True, null=True)
     make = models.CharField(max_length=25, blank=True, null=True)
     model = models.CharField(max_length=25, blank=True, null=True)
     year = models.CharField(max_length=4, blank=True, null=True)
     mileage = models.CharField(max_length=25, blank=True, null=True)
     transmission = models.CharField(max_length=25, blank=True, null=True)
-    body = models.CharField(max_length=25, blank=True, null=True)
+    body_type = models.CharField(max_length=25, blank=True, null=True)
     colour = models.CharField(max_length=25, blank=True, null=True)
-
-
-class RealEstateMeta(models.Model):
-    advertisment = models.OneToOneField(Advertisement)
     building_type = models.CharField(max_length=25, blank=True, null=True)
     size = models.CharField(max_length=25, blank=True, null=True)
-    bedrooms = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True)
-    bathrooms = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True)
-    pet_friendly = models.BooleanField(default=False)
-    parking_spaces = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True)
-    move_in = models.DateTimeField(auto_now_add=True)
-
-
-class EmploymentMeta(models.Model):
-    advertisment = models.OneToOneField(Advertisement)
+    no_bedrooms = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True)
+    no_bathrooms = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True)
+    is_pet_friendly = models.BooleanField(default=False)
+    no_parking_spaces = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True)
+    avaiable_move_in = models.DateTimeField(blank=True, null=True)
     job_type = models.CharField(max_length=25, blank=True, null=True)
     company = models.CharField(max_length=25, blank=True, null=True)
     salary = models.CharField(max_length=25, blank=True, null=True)
     location = models.CharField(max_length=25, blank=True, null=True)
+    
+
+
+
+
 
 
 class Transaction(models.Model):

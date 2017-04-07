@@ -25,17 +25,10 @@ class AdvertisementAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Advertisement._meta.fields if field.name != "id"]
 admin.site.register(Advertisement, AdvertisementAdmin)
 
-class AutomotiveMetaAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in AutomotiveMeta._meta.fields if field.name != "id"]
-admin.site.register(AutomotiveMeta, AutomotiveMetaAdmin)
+class AdvertisementMetaAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in AdvertisementMeta._meta.fields if field.name != "id"]
+admin.site.register(AdvertisementMeta, AdvertisementMetaAdmin)
 
-class RealEstateMetaAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in RealEstateMeta._meta.fields if field.name != "id"]
-admin.site.register(RealEstateMeta, RealEstateMetaAdmin)
-
-class EmploymentMetaAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in EmploymentMeta._meta.fields if field.name != "id"]
-admin.site.register(EmploymentMeta, EmploymentMetaAdmin)
 
 class AdPackageAdmin(admin.ModelAdmin):
     list_display = [field.name for field in AdPackage._meta.fields if field.name != "id"]

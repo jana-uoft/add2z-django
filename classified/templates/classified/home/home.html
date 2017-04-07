@@ -1,4 +1,4 @@
-{% extends 'classified/base.html' %}
+{% extends 'classified/base/base.html' %}
 
 {% block title %} 
 	Add2Z Classifieds 
@@ -11,15 +11,15 @@
 
 	<div class="row">
 		<div class="col-sm-12 page-content ">
-			{% include 'classified/featured_listings.html' %}
+			{% include 'classified/home/featured_listings.html' %}
 		</div>
 
 		<div class="col-sm-12 page-content">
-			{% include 'classified/category_browse.html' %}
+			{% include 'classified/home/category_browse.html' %}
 		</div>
 
 		<div class="col-sm-12 page-sidebar">
-			{% include 'classified/directory_listings.html' %}
+			{% include 'classified/home/directory_listings.html' %}
 		</div>
 	</div> <!-- /.row-->
 
@@ -27,5 +27,5 @@
 
 
 {% block sponsor-content %}
-	{% include 'classified/sponsors.html' %}	
+	{% include 'classified/home/sponsors.html' %}	
 {% endblock %}

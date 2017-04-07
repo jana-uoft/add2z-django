@@ -7,16 +7,16 @@
 
 	<head>
 		<title>{% block title %} {% endblock %}</title>
-		{% include 'classified/load_styles.html' %}
+		{% include 'classified/base/load_styles.html' %}
 	</head>
 
 	<body>
 
 		<div id="wrapper">
 
-			{% include 'classified/navigation.html' %}
+			{% include 'classified/base/navigation.html' %}
 
-			{% include 'classified/search_bar.html' %}
+			{% include 'classified/base/search_bar.html' %}
 
 			<div class="main-container" style="padding: 0px">
 			    <div class="container">
@@ -26,11 +26,11 @@
 
 			{% block sponsor-content %} {% endblock %}
 
-			{% include 'classified/footer.html' %}
+			{% include 'classified/base/footer.html' %}
 
 		</div>
 
-		{% include 'classified/load_scripts.html' %}
+		{% include 'classified/base/load_scripts.html' %}
 
 	</body>
 
