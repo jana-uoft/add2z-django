@@ -1,0 +1,38 @@
+{% extends 'classified/base/base.html' %}
+
+{% block title %} 
+	Classified Listings 
+{% endblock %}
+
+
+{% block main-content %}
+
+<div class="container" style="max-width: auto;}">
+
+	<div class="row">
+		<div class="col-sm-3 page-sidebar mobile-filter-sidebar">
+			{% include 'classified/listing/_listings_filter.html' %}
+		</div>
+
+		<div class="col-sm-9 page-content col-thin-left">
+			{% include 'classified/listing/_display_listings.html' %}
+		</div>
+	</div> <!-- /.row-->
+
+
+
+	<div class="col-lg-12 content-box ">
+		{% include 'classified/home/featured_listings.html' %}
+	</div>
+
+
+	<div class="post-promo text-center">
+	    <h2> Have you got anything sell ? </h2>
+	    <h5>Sell your products online FOR FREE. It's easier than you think !</h5>
+	    <a href="post-ads.html" class="btn btn-lg btn-border btn-post btn-danger">Post a Free Ad </a>
+	    <hr>
+	</div>
+
+</div>
+
+{% endblock %}

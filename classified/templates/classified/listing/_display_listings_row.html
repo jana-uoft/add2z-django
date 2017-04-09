@@ -1,0 +1,41 @@
+{% load humanize %}
+
+<div class="col-sm-2 no-padding photobox">
+    <div class="add-image">
+        <a href="{% url 'classified:single-listing' ad.id %}">
+            <img class="thumbnail no-margin" src="{{ad.thumbnail}}" alt="{{ad.title}}" >
+        </a>
+    </div>
+</div>
+<!--/.photobox-->
+<div class="col-sm-7 add-desc-box">
+    <div class="add-details">
+        <h5 class="add-title">
+            <a href="{% url 'classified:single-listing' ad.id %}"> {{ad.title}} </a>
+        </h5>
+        <span class="info-row"> 
+            <span class="date"><i class=" icon-clock"> </i> {{ad.created_at|date:"M d, Y"}} </span> - 
+            <span class="category">{{ad.main_category}} </span> - 
+            <span class="item-location"><i class="fa fa-map-marker"></i> {{ad.location}} </span> <br>
+            <span class="item-details" style="font-weight: 400; color: #000;"> &nbsp;{{ad.description|truncatechars:1000}} </span> 
+        </span>
+    </div>
+</div>
+<!--/.add-desc-box-->
+<div class="col-sm-3 text-right price-box">
+    <h2 class="item-price"> ${{ad.offer_price|intcomma}} </h2>
+
+    {% if ad in USER_FAV_ADS %}
+    <a class="btn btn-border-thin  btn-save" title="Remove From Favourites"  data-toggle="tooltip" data-placement="left"> 
+        <i class="icon icon-heart" style="color: red;"></i> 
+    </a>
+    {% else %}
+    <a class="btn btn-border-thin  btn-save" title="Add To Favourites"  data-toggle="tooltip" data-placement="left"> 
+        <i class="icon icon-heart"></i> 
+    </a>
+    {% endif %}
+    <a class="btn btn-border-thin btn-share ">
+        <i class="icon icon-export" data-toggle="tooltip" data-placement="left"  title="Share"></i>
+    </a>
+</div>
+<!--/.add-desc-box-->

@@ -18,7 +18,7 @@
                 <div class="item">
                     <a href="{% url 'classified:listing' listing.id %}">
                         <span class="item-carousel-thumb">
-                            <img class="img-responsive" src="{{listing.photos}}" alt="{{listing.title}}">
+                            <img class="img-responsive" src="{{listing.thumbnail}}" alt="{{listing.title}}">
                         </span>
                         <span class="item-name" style="min-height: 20px;"> {{listing.title}} </span>
                         <span class="price" style="padding-top: 0px; padding-bottom: 2px;"> ${{listing.offer_price | intcomma }}  </span>

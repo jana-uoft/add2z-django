@@ -1,0 +1,106 @@
+{% load humanize %}
+
+
+
+<div class="category-list">
+    <div class="tab-box clearfix ">
+        <!-- Mobile Filter bar -->
+        <div class="mobile-filter-bar col-lg-12  ">
+            <ul class="list-unstyled list-inline no-margin no-padding">
+                <li class="filter-toggle"> <a class=""><i class="icon-th-list"></i>Filters </a> </li>
+                <li>
+                    <div class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle"><i class="caret "></i> Sort By </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="" rel="nofollow">Date Posted &#x25B2;</a></li>
+                            <li><a href="" rel="nofollow">Date Posted &#x25BC;</a></li>
+                            <li><a href="" rel="nofollow">Offer Price &#x25B2;</a></li>
+                            <li><a href="" rel="nofollow">Offer Price &#x25BC;</a></li>
+                            <li><a href="" rel="nofollow">Random Order</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="menu-overly-mask"></div>
+        <!-- Mobile Filter bar End-->
+
+        <div class="tab-filter hide-xs">
+            <select class="selectpicker" data-style="btn-select" data-width="auto" style="-moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    text-indent: 0.1;
+    text-overflow: '';
+    border: none;
+    border-radius: none;
+    background: none;
+    padding: 20px 15px 0 15px;">
+                <option value="Date Posted Asc">Date Posted &#x25B2;<i class="fa fa-arrow-down"></i></option>
+                <option value="Date Posted Desc">Date Posted &#x25BC;<i class="fa fa-arrow-down"></i></option>
+                <option value="Offer Price Asc">Offer Price &#x25B2;</option>
+                <option value="Offer Price Desc">Offer Price &#x25BC;</option>
+                <option value="Offer Price Desc">Random Order</option>
+            </select>
+        </div>
+        <!--/.tab-filter-->
+    </div>
+    <!--/.tab-box-->
+
+
+    <div class="listing-filter">
+        <div class="pull-left col-sm-6 col-xs-12 hide-xs">
+            <div class="breadcrumb-list text-center-xs">
+                <a class="jobs-s-tag" rel="nofollow" title="Software Architect">Software Engineer </a>
+                <a rel="nofollow" class="jobs-s-tag"> New York</a>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+    <!--/.listing-filter-->
+
+
+    <div class="adds-wrapper">
+        {% for ad in ALL_TOP_ADS_AND_METAS %}
+        <div class="item-list">
+            <div class="cornerRibbons urgentAds"> <a href="#"> Top Ad</a> </div>
+            {% include 'classified/listing/_display_listings_row.html' %}
+        </div>
+        {% endfor %}
+
+        {% for ad in ALL_ADS_TUPLE %}
+        <div class="item-list ">
+            {% include 'classified/listing/_display_listings_row.html' %}
+        </div>
+        {% endfor %}
+    </div>
+    <!--/.adds-wrapper-->
+
+
+
+    {% if ALL_ADS_TUPLE.has_other_pages %}
+    <div class="pagination-bar text-center">
+        <ul class="pagination">
+            {% if ALL_ADS_TUPLE.has_previous %}
+              <li><a href="?page={{ ALL_ADS_TUPLE.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in ALL_ADS_TUPLE.paginator.page_range %}
+              {% if ALL_ADS_TUPLE.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if ALL_ADS_TUPLE.has_next %}
+              <li><a href="?page={{ ALL_ADS_TUPLE.next_page_number }}" class="pagination-btn" >Next &raquo;</a></li>
+            {% else %}
+              <li class="disabled" class="pagination-btn"><span>Next &raquo;</span></li>
+            {% endif %}
+        </ul>
+    </div>
+    <!--/.pagination-bar -->
+    {% endif %}
+
+
+</div>

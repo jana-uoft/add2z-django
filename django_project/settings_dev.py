@@ -148,6 +148,6 @@ GS_SECRET_ACCESS_KEY = 'bjX44UUmYPxvD/wO/HHr4bP0Ohwm11mIu6enL7HU'
 GS_BUCKET_NAME = 'add2z'
 # STATICFILES_STORAGE = 'storages.backends.gs.GSBotoStorage'
 
-STATIC_URL = 'https://storage.googleapis.com/add2z/'
-STATIC_ROOT = 'https://storage.googleapis.com/add2z/'
+# STATIC_URL = 'https://storage.googleapis.com/add2z/'
+# STATIC_ROOT = 'https://storage.googleapis.com/add2z/'
 

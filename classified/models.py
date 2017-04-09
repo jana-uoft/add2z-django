@@ -98,6 +98,7 @@ class Advertisement(models.Model):
     approved = models.BooleanField(default=False)
     thumbnail = models.CharField(max_length=1000, blank=True, null=True)
     website = models.CharField(max_length=1000, blank=True, null=True)
+    favourited_by = models.ManyToManyField(User, related_name="favorited_users")
 
     def __str__(self):
         return self.title
