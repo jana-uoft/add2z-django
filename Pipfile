@@ -1,0 +1,11 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+[packages]
+netifaces = "*"
+django-allauth = "*"
+psycopg2 = "*"
+pypostalcode = "*"
+django-storages = "*"
+Django = "*"
