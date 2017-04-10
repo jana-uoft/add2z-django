@@ -1,55 +1,99 @@
+{% load filter_url %}
+
 <!-- this (.mobile-filter-sidebar) part will be position fixed in mobile version -->
 <aside>
     <div class="inner-box">
         <div class="categories-list  list-filter">
-            <h5 class="list-title"><strong><a href="#">All Categories</a></strong></h5>
-            <ul class=" list-unstyled">
-                <li><a href="sub-category-sub-location.html"><span
-                        class="title">Electronics</span><span class="count">&nbsp;8626</span></a>
-                </li>
-                <li><a href="sub-category-sub-location.html"><span class="title">Automobiles </span><span
-                        class="count">&nbsp;123</span></a></li>
-                <li><a href="sub-category-sub-location.html"><span
-                        class="title">Property </span><span class="count">&nbsp;742</span></a></li>
-                <li><a href="sub-category-sub-location.html"><span
-                        class="title">Services </span><span class="count">&nbsp;8525</span></a></li>
-                <li><a href="sub-category-sub-location.html"><span
-                        class="title">For Sale </span><span class="count">&nbsp;357</span></a></li>
-                <li><a href="sub-category-sub-location.html"><span
-                        class="title">Learning </span><span class="count">&nbsp;3576</span></a></li>
-                <li><a href="sub-category-sub-location.html"><span class="title">Jobs </span><span
-                        class="count">&nbsp;453</span></a></li>
-                <li><a href="sub-category-sub-location.html"><span
-                        class="title">Cars & Vehicles</span><span class="count">&nbsp;801</span></a>
-                </li>
-                <li><a href="sub-category-sub-location.html"><span class="title">Other</span><span
-                        class="count">&nbsp;9803</span></a></li>
+            <h5 class="list-title"><strong><a href="{% url 'classified:all-listings' %}">Category</a></strong></h5>
+            <ul class=" list-unstyled long-list">
+                {% for main_cat in MAIN_CATEGORIES %}
+                {% with cat=main_cat.id|stringformat:"i"%}
+                {% if "main_category="|add:cat not in NEW_FILTERS %}
+                {% with new_filter="main_category="|add:cat %}
+                {% with filters=NEW_FILTERS|filter_url:new_filter %}
+                <li><a href='{% url "classified:filter-listings" filters %}'>
+                {% endwith %}
+                {% endwith %}
+                {% else %}
+                <li><a href='{% url "classified:filter-listings" NEW_FILTERS %}'>
+                {% endif %}
+                {% endwith %}
+
+                    {% if SELECTED_MAIN_CATEGORY == main_cat %}
+                    <span class="title" style="font-weight: 700; color: #000;">{{main_cat.name}}</span>
+                    <span class="count pull-right" style="font-weight: 700; color: #000;">&nbsp;({{main_cat.count}})</span>
+
+                    <ul class=" list-unstyled long-list">
+                        {% for sub_cat in SUB_CATEGORIES %}
+                        {% with cat=sub_cat.id|stringformat:"i"%}
+                        {% if 'sub_category'|add:cat not in NEW_FILTERS %}
+                        {% with new_filter="sub_category="|add:cat %}
+                        {% with filters=NEW_FILTERS|filter_url:new_filter %}
+                        <li><a href='{% url "classified:filter-listings" filters %}'>
+                        {% endwith %}
+                        {% endwith %}
+                        {% else %}
+                        <li><a href='{% url "classified:filter-listings" NEW_FILTERS %}'>
+                            {% endif %}
+                            {% endwith %}
+
+                            {% if SELECTED_SUB_CATEGORY == sub_cat %}
+                            <span class="title" style="font-weight: 700; color: #000;">{{sub_cat.name}}</span>
+                            <span class="count pull-right" style="font-weight: 700; color: #000;">&nbsp;({{sub_cat.count}})</span>
+                            {% else %}
+                            <span class="title">{{sub_cat.name}}</span>
+                            <span class="count pull-right">&nbsp;({{sub_cat.count}})</span>
+                            {% endif %}
+                        </a></li>
+                        {% endfor %}
+                    </ul>
+
+                    {% else %}
+                    <span class="title">{{main_cat.name}}</span>
+                    <span class="count pull-right">&nbsp;({{main_cat.count}})</span>
+                {% endif %}
+                </a></li>
+                {% endfor %}
             </ul>
         </div>
         <!--/.categories-list-->
 
+
         <div class="locations-list  list-filter">
             <h5 class="list-title"><strong><a href="#">Location</a></strong></h5>
             <ul class="browse-list list-unstyled long-list">
-                <li><a href="sub-category-sub-location.html"> Atlanta </a></li>
-                <li><a href="sub-category-sub-location.html"> Wichita </a></li>
-                <li><a href="sub-category-sub-location.html"> Anchorage </a></li>
-                <li><a href="sub-category-sub-location.html"> Dallas </a></li>
-                <li><a href="sub-category-sub-location.html">New York </a></li>
-                <li><a href="sub-category-sub-location.html"> Santa Ana/Anaheim </a></li>
-                <li><a href="sub-category-sub-location.html"> Miami </a></li>
-                <li><a href="sub-category-sub-location.html"> Virginia Beach </a></li>
-                <li><a href="sub-category-sub-location.html"> San Diego </a></li>
-                <li><a href="sub-category-sub-location.html"> Boston </a></li>
-                <li><a href="sub-category-sub-location.html"> Houston </a></li>
-                <li><a href="sub-category-sub-location.html">Salt Lake City </a></li>
-                <li><a href="sub-category-sub-location.html"> Other Locations </a></li>
+                {% for province, cities in ALL_LOCATIONS.items %}
+                    {% with new_filter="province="|add:province %}
+                    {% with filters=NEW_FILTERS|filter_url:new_filter %}
+                    {% if SELECTED_PROVINCE == province %}
+                    <li><a href='{% url "classified:filter-listings" filters %}' style="font-weight: 700; color: #000;"> {{province}} </a></li>
+                    {% else %}
+                    <li><a href='{% url "classified:filter-listings" filters %}'> {{province}} </a></li>
+                    {% endif %}
+                    {% endwith %}
+                    {% endwith %}
+                        {% if SELECTED_PROVINCE == province %}
+                        <ul class="browse-list list-unstyled long-list">
+                        {% for city in cities %}
+                            {% with new_filter="city="|add:city %}
+                            {% with filters=NEW_FILTERS|filter_url:new_filter %}
+                            {% if SELECTED_CITY == city %}
+                            <li><a href='{% url "classified:filter-listings" filters %}' style="font-weight: 700; color: #000;"> {{city}} </a></li>
+                            {% else %}
+                            <li><a href='{% url "classified:filter-listings" filters %}'> {{city}} </a></li>
+                            {% endif %}
+                            {% endwith %}
+                            {% endwith %}
+                        {% endfor %}
+                        </ul>
+                        {% endif %}
+                {% endfor %}
             </ul>
         </div>
         <!--/.locations-list-->
 
         <div class="locations-list  list-filter">
-            <h5 class="list-title"><strong><a href="#">Price range</a></strong></h5>
+            <h5 class="list-title"><strong><a href="#">Offer Range</a></strong></h5>
 
             <form role="form" class="form-inline ">
                 <div class="form-group col-sm-4 no-padding">
@@ -67,18 +111,9 @@
             <div style="clear:both"></div>
         </div>
         <!--/.list-filter-->
-        <div class="locations-list  list-filter">
-            <h5 class="list-title"><strong><a href="#">Seller</a></strong></h5>
-            <ul class="browse-list list-unstyled long-list">
-                <li><a href="sub-category-sub-location.html"><strong>All Ads</strong> <span
-                        class="count">228,705</span></a></li>
-                <li><a href="sub-category-sub-location.html">Business <span
-                        class="count">28,705</span></a></li>
-                <li><a href="sub-category-sub-location.html">Personal <span
-                        class="count">18,705</span></a></li>
-            </ul>
-        </div>
-        <!--/.list-filter-->
+
+
+
         <div class="locations-list  list-filter">
             <h5 class="list-title"><strong><a href="#">Condition</a></strong></h5>
             <ul class="browse-list list-unstyled long-list">
@@ -218,60 +253,6 @@
         <!--/.list-filter-->
 
 
-
-
-
-        <div class="locations-list  list-filter">
-            <h5 class="list-title"><strong><a href="#">Specialisms</a></strong></h5>
-
-
-            <ul class="browse-list list-unstyled long-list">
-                <li><a href="job-list.html">Engineering jobs <span class="count">12,578</span> </a>
-                </li>
-                <li><a href="job-list.html">Estate Agency jobs <span class="count">4,546</span> </a>
-                </li>
-                <li><a href="job-list.html">Financial Services jobs <span class="count">9,115</span></a>
-                </li>
-                <li><a href="job-list.html">Banking jobs <span class="count">1,468</span></a></li>
-                <li><a href="job-list.html">Security &amp; Safety jobs <span
-                        class="count">723</span></a></li>
-                <li><a href="job-list.html">Graduate jobs <span class="count">18,514</span></a></li>
-                <li><a href="job-list.html">Health &amp; Medicine jobs <span
-                        class="count">10,621</span></a></li>
-                <li><a href="job-list.html">Training jobs <span class="count">651</span></a></li>
-                <li><a href="job-list.html">Hospitality &amp; Catering jobs <span class="count">7,585</span></a>
-                </li>
-                <li><a href="job-list.html">Human Resources jobs <span
-                        class="count">3,768</span></a></li>
-                <li><a href="job-list.html">IT &amp; Telecoms jobs <span class="count">17,242</span></a>
-                </li>
-                <li><a href="job-list.html">IT Contractor jobs <span class="count">2,102</span></a>
-                </li>
-            </ul>
-
-        </div>
-        <!--/.list-filter-->
-
-        <div class="locations-list  list-filter">
-            <h5 class="list-title"><strong><a href="#">Location</a></strong></h5>
-            <ul class="browse-list list-unstyled long-list">
-                <li><a href="job-list.html">New York</a></li>
-                <li><a href="job-list.html">South West</a></li>
-                <li><a href="job-list.html">South East</a></li>
-                <li><a href="job-list.html">East England</a></li>
-                <li><a href="job-list.html">East Midlands</a></li>
-                <li><a href="job-list.html">West Midlands</a></li>
-                <li><a href="job-list.html">North East</a></li>
-                <li><a href="job-list.html">North West</a></li>
-                <li><a href="job-list.html">Scotland</a></li>
-                <li><a href="job-list.html">Wales</a></li>
-                <li><a href="job-list.html">Northern Ireland</a></li>
-                <li><a href="job-list.html">England</a></li>
-                <li><a href="job-list.html">UK</a></li>
-                <li><a href="job-list.html"> Other Locations </a></li>
-            </ul>
-        </div>
-        <!--/.locations-list-->
 
         <div style="clear:both"></div>
     </div>

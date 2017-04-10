@@ -16,7 +16,7 @@
             <div class="no-margin item-carousel owl-carousel owl-theme">
                 {% for listing in TOP_OF_THE_PAGE_LISTINGS %}
                 <div class="item">
-                    <a href="{% url 'classified:listing' listing.id %}">
+                    <a href="{% url 'classified:single-listing' listing.id %}">
                         <span class="item-carousel-thumb">
                             <img class="img-responsive" src="{{listing.thumbnail}}" alt="{{listing.title}}">
                         </span>

@@ -5,15 +5,19 @@
     <div class="row row-featured row-featured-category">
         <div class="col-lg-12  box-title no-border">
             <div class="inner"><h2><span>Browse by</span>
-                Category <a href="{% url 'classified:listings' %}" class="sell-your-item"> View more <i class="  icon-th-list"></i> </a></h2>
+                Category <a href="{% url 'classified:all-listings' %}" class="sell-your-item"> View more <i class="  icon-th-list"></i> </a></h2>
             </div>
         </div>
         {% for category in AD_CATEGORIES %}
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 f-category" style=" padding: 0px; border: 0px;">
-            <a href="{% url 'classified:listings' %}">
+            {% with cat=category.id|stringformat:"i"%}
+            {% with filters="main_category="|add:cat %}
+            <a href='{% url "classified:filter-listings" filters %}'>
                 <img src="{{category.image}}" alt="{{category}}" class="img-responsive">
                 <h6> {{category}} </h6>
             </a>
+            {% endwith %}
+            {% endwith %}
         </div>
         {% endfor %}
     </div>
