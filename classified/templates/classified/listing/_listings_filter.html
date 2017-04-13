@@ -3,6 +3,8 @@
 <!-- this (.mobile-filter-sidebar) part will be position fixed in mobile version -->
 <aside>
     <div class="inner-box">
+
+
         <div class="categories-list  list-filter">
             <h5 class="list-title"><strong><a href="{% url 'classified:all-listings' %}">Category</a></strong></h5>
             <ul class=" list-unstyled long-list">
@@ -95,18 +97,30 @@
         <div class="locations-list  list-filter">
             <h5 class="list-title"><strong><a href="#">Offer Range</a></strong></h5>
 
-            <form role="form" class="form-inline ">
+            <form role="form" class="form-inline" id="filter_by_price" action="listings" method="GET">
                 <div class="form-group col-sm-4 no-padding">
-                    <input type="text" placeholder="$ 2000 " id="minPrice" class="form-control">
+                    {% if MIN_PRICE %}
+                        <input type="text" placeholder="$ MIN " id="minPrice" oldv={{MIN_PRICE}} class="form-control" value={{MIN_PRICE}} >
+                    {% else %}
+                        <input type="text" placeholder="$ MIN " id="minPrice" class="form-control" value={{MIN_PRICE}} >
+                    {% endif %}
                 </div>
-                <div class="form-group col-sm-1 no-padding text-center hidden-xs"> -</div>
+                <div class="form-group col-sm-1 no-padding text-center hidden-xs"> </div>
                 <div class="form-group col-sm-4 no-padding">
-                    <input type="text" placeholder="$ 3000 " id="maxPrice" class="form-control">
+                     {% if MAX_PRICE %}
+                        <input type="text" placeholder="$ MAX " id="maxPrice" oldv= {{MAX_PRICE}} class="form-control " value={{MAX_PRICE}} >
+                    {% else %}
+                        <input type="text" placeholder="$ MAX " id="maxPrice" class="form-control " value={{MAX_PRICE}} >
+                    {% endif %}
+                </div>
+               <div class="form-group hidden">
+                    <input type="text" id="FILTERS" class="form-control" value="{{ NEW_FILTERS }}">
                 </div>
                 <div class="form-group col-sm-3 no-padding">
-                    <button class="btn btn-default pull-right btn-block-xs" type="submit">GO
+                    <button class="btn btn-success pull-right btn-block-xs" type="submit">GO
                     </button>
                 </div>
+ 
             </form>
             <div style="clear:both"></div>
         </div>
@@ -114,45 +128,41 @@
 
 
 
-        <div class="locations-list  list-filter">
-            <h5 class="list-title"><strong><a href="#">Condition</a></strong></h5>
-            <ul class="browse-list list-unstyled long-list">
-                <li><a href="sub-category-sub-location.html">New <span class="count">228,705</span></a>
-                </li>
-                <li><a href="sub-category-sub-location.html">Used <span class="count">28,705</span></a>
-                </li>
-                <li><a href="sub-category-sub-location.html">None </a></li>
-            </ul>
-        </div>
-        <!--/.list-filter-->
-        <div style="clear:both"></div>
 
         <div class=" list-filter">
             <h5 class="list-title"><strong><a href="#"> Date Posted </a></strong></h5>
 
             <div class="filter-date filter-content">
-                <ul>
-                    <li>
-                        <input type="radio" value="1" id="posted_1" name="posted">
-                        <label for="posted_1">24 hours</label>
-                    </li>
-                    <li>
-                        <input type="radio" value="3" id="posted_3" name="posted">
-                        <label for="posted_3">3 days</label>
-                    </li>
-                    <li>
-                        <input type="radio" value="7" id="posted_7" name="posted">
-                        <label for="posted_7">7 days</label>
-                    </li>
-                    <li>
-                        <input type="radio" checked="checked" value="30" id="posted_30"
+                <!-- <ul> -->
+                    <span class="pull-right">
+                    <label for="posted_30">30 Days&nbsp;</label>
+                        <input type="radio" value="30" id="posted_30" name="posted">
+                        
+                    </span>
+                    <span>
+                        <input type="radio" {{ONE_DAY_CHECKED}} value="1" id="posted_1" name="posted">
+                        <label for="posted_1">24 Hours</label>
+                    </span>
+                    <br>
+                    <span class="pull-right">
+                    <label for="posted_any">Any &nbsp;</label>
+                        <input type="radio" value="any" id="posted_any" name="posted">
+                        
+                    </span>
+                    <span>
+                        <input type="radio" value="7" id="posted_7"
                                name="posted">
-                        <label for="posted_30">30 days</label>
-                    </li>
-                </ul>
+                        <label for="posted_7">7 Days</label>
+                    </span>
+
+                <!-- </ul> -->
             </div>
+            <div style="clear:both"></div>
         </div>
         <!--/.categories-list-->
+
+
+
 
         <div class="list-filter">
             <h5 class="list-title"><strong><a href="#">Employment Type</a></strong></h5>

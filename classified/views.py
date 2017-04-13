@@ -33,6 +33,20 @@ def listings(request, filters=None):
                     filter_params[param.split("=")[0]] = AdMainCategory.objects.get(id=param.split("=")[1])
                 elif param.split("=")[0] == 'sub_category':
                     filter_params[param.split("=")[0]] = AdSubCategory.objects.get(id=param.split("=")[1])
+                elif param.split("=")[0] == 'minPrice':
+                    filter_params['offer_price__gte'] = param.split("=")[1]
+                elif param.split("=")[0] == 'maxPrice':
+                    filter_params['offer_price__lte'] = param.split("=")[1]
+                elif param.split("=")[0] == 'posted_within':
+                    startDate = date.today()
+                    if param.split("=")[1] == "1day":
+                        startDate = startDate - timedelta(days=1)
+                    elif param.split("=")[1] == "7days":
+                        startDate = startDate - timedelta(days=7)
+                    elif param.split("=")[1] == "30days":
+                        startDate = startDate - timedelta(days=30)
+                    if startDate != date.today() :
+                        filter_params['created_at__gte'] = startdate
                 else:
                     filter_params[param.split("=")[0]] = param.split("=")[1]
         except:
@@ -76,9 +90,11 @@ def listings(request, filters=None):
 
 
     CURRENT_FILTERS = request.path.split("/")[3]
-    NEW_FILTERS = ''
+    NEW_FILTERS = {}
     SELECTED_MAIN_CATEGORY, SELECTED_SUB_CATEGORY, SELECTED_PROVINCE, SELECTED_CITY, SELECTED_OFFER_TYPE = (None,)*5
+    MIN_PRICE, MAX_PRICE = "", ""
     main_cat_changed = False
+    ONE_DAY_CHECKED = ""
     try:
         for f in CURRENT_FILTERS.split("&"):
             try:
@@ -86,30 +102,57 @@ def listings(request, filters=None):
                 filter_value = f.split("=")[1]
                 if filter_field == 'main_category':
                     SELECTED_MAIN_CATEGORY = AdMainCategory.objects.get(id=filter_value)
-                    NEW_FILTERS += 'main_category='+str(SELECTED_MAIN_CATEGORY.id)+'&'
+                    NEW_FILTERS['main_category='] = str(SELECTED_MAIN_CATEGORY.id)+'&'
                 elif filter_field == 'sub_category':
-                    SELECTED_SUB_CATEGORY = AdSubCategory.objects.get(id=filter_value)
                     try:
+                        SELECTED_SUB_CATEGORY = AdSubCategory.objects.get(id=filter_value)
                         if SELECTED_SUB_CATEGORY.parent_category == SELECTED_MAIN_CATEGORY:
-                            NEW_FILTERS += 'sub_category='+str(SELECTED_SUB_CATEGORY.id)+'&'
+                            NEW_FILTERS['sub_category='] = str(SELECTED_SUB_CATEGORY.id)+'&'
                         else:
                             main_cat_changed = True
                     except:
                         continue
                 elif filter_field == 'province':
                     SELECTED_PROVINCE = filter_value
-                    NEW_FILTERS += 'province='+filter_value+'&'
+                    NEW_FILTERS['province='] = filter_value+'&'
                 elif filter_field == 'city':
                     SELECTED_CITY= filter_value
-                    NEW_FILTERS += 'city='+filter_value+'&'
+                    NEW_FILTERS['city='] = filter_value+'&'
                 elif filter_field == 'offer_type':
                     SELECTED_OFFER_TYPE = filter_value
-                    NEW_FILTERS += 'offer_type='+filter_value+'&'
+                    NEW_FILTERS['offer_type='] = filter_value+'&'
+                elif filter_field == 'minPrice':
+                    has_min_price = True
+                    if filter_value != "0":
+                        MIN_PRICE = filter_value
+                        NEW_FILTERS['minPrice='] = filter_value+'&'
+                elif filter_field == 'maxPrice':
+                    has_max_price = True
+                    if filter_value != "999999":
+                        MAX_PRICE = filter_value
+                        NEW_FILTERS['maxPrice='] = filter_value+'&'
+                elif filter_field == 'posted_within':
+                    if filter_value == "1day":
+                        ONE_DAY_CHECKED = "checked"
+                        # NEW_FILTERS['posted_within='] = filter_value+'&'
+
             except:
                 continue
     except:
         pass
 
+    print NEW_FILTERS
+    NEW_FILTER_STRING = ''
+    for key in ['main_category=', 'sub_category=', 'province=', 'city=', 'offer_type=', 'minPrice=', 'maxPrice=', 'posted_within=']:
+        try:
+            NEW_FILTER_STRING += key+NEW_FILTERS[key]
+        except:
+            continue
+
+    NEW_FILTERS = NEW_FILTER_STRING
+    print NEW_FILTERS
+
+    print main_cat_changed
     if main_cat_changed:
         return redirect('classified:filter-listings', NEW_FILTERS)
 
@@ -129,7 +172,6 @@ def listings(request, filters=None):
         except:
             ALL_LOCATIONS[location.province] = [location.city.split(" ")[0]]
 
-    # print NEW_FILTERS
     return render(request, 'classified/listing/all_listings.html', {'ALL_ADS_AND_METAS': ALL_ADS_AND_METAS,
                                                                     'ALL_ADS_TUPLE': ALL_ADS_TUPLE, 
                                                                     'ALL_TOP_ADS_AND_METAS': ALL_TOP_ADS_AND_METAS,
@@ -141,7 +183,9 @@ def listings(request, filters=None):
                                                                     'ALL_LOCATIONS': ALL_LOCATIONS,
                                                                     'SELECTED_PROVINCE': SELECTED_PROVINCE,
                                                                     'SELECTED_CITY': SELECTED_CITY,
-                                                                    'SELECTED_OFFER_TYPE': SELECTED_OFFER_TYPE})
+                                                                    'SELECTED_OFFER_TYPE': SELECTED_OFFER_TYPE,
+                                                                    'MIN_PRICE': MIN_PRICE,
+                                                                    'MAX_PRICE': MAX_PRICE,})
 
 
 def listing(request, listing_id):
