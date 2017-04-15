@@ -136,24 +136,35 @@ function filter_by_price() {
 
 
 
-$('#posted_1').on('click', function(event){
-    url = "./"+$('#FILTERS').val()+"posted_within=1day&"
-    $.ajax({
-        url : ""+$('#FILTERS').val()+"posted_within=1day&", // the endpoint
-        type : "GET", // http method
-        // handle a successful response
-        success : function(json) {
-            console.log(url);
-            // window.location = url;
-        },
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            url = "./"+$('#FILTERS').val()
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+$('#date_filter input').on('click', function(event){
+    {% if CURRENT_FILTERS %}
+		url = "{{ CURRENT_FILTERS|filter_url|safe }}"
+	{% else %}
+		url = ""
+	{% endif %}
+	
+	if (url.indexOf("posted_within") >= 0) {
+	   url = "{{ CURRENT_FILTERS|filter_url:'remove_date'|safe }}"
+	}
+	
+	url = url + "&" + $(this).attr('value')
 
-            // window.location = url;
+	if (url.match("^&")) {
+	   url = url.slice(1)
+	}
+
+    $.ajax({
+        url : url, 
+        type : "GET", 
+        success : function(json) {
+            window.location = url;
+        },
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
         }
     });
+
+
 });
 
 </script>

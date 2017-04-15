@@ -112,141 +112,53 @@
 
 
         <div class=" list-filter">
-            <h5 class="list-title"><strong><a href="#"> Date Posted </a></strong></h5>
-
-            <div class="filter-date filter-content">
-                <!-- <ul> -->
+            <h5 class="list-title"><strong><a href="#"> Posted Within </a></strong></h5>
+            <div class="filter-date filter-content" id=date_filter>
                     <span class="pull-right">
                     <label for="posted_30">30 Days&nbsp;</label>
-                        <input type="radio" value="30" id="posted_30" name="posted">
-                        
+                        <input type="radio" {{ONE_MONTH_CHECKED}} value="posted_within=30days" id="posted_30" name="posted">
                     </span>
                     <span>
-                        <input type="radio" {{ONE_DAY_CHECKED}} value="1" id="posted_1" name="posted">
+                        <input type="radio" {{ONE_DAY_CHECKED}} value="posted_within=1day" id="posted_1" name="posted">
                         <label for="posted_1">24 Hours</label>
                     </span>
                     <br>
                     <span class="pull-right">
-                    <label for="posted_any">Any &nbsp;</label>
-                        <input type="radio" value="any" id="posted_any" name="posted">
+                    <label for="posted_any">Any Time &nbsp;</label>
+                        <input type="radio" {{ANY_DAY_CHECKED}} value="posted_within=any" id="posted_any" name="posted">
                         
                     </span>
                     <span>
-                        <input type="radio" value="7" id="posted_7"
+                        <input type="radio" {{SEVEN_DAY_CHECKED}} value="posted_within=7days" id="posted_7"
                                name="posted">
                         <label for="posted_7">7 Days</label>
                     </span>
-
-                <!-- </ul> -->
             </div>
             <div style="clear:both"></div>
         </div>
         <!--/.categories-list-->
 
 
+        {% if SELECTED_MAIN_CATEGORY == 1 %}
+            {% include 'classified/listing/_automotive_filter.html' %}
+        {% endif %}
 
 
-        <div class="list-filter">
-            <h5 class="list-title"><strong><a href="#">Employment Type</a></strong></h5>
-
-            <div class="filter-content filter-employment-type">
-                <ul class="browse-list list-unstyled">
-                    <li>
-                        <input type="checkbox" id="employment_all" value="all" class="emp"
-                               checked="checked">
-                        <label for="employment_all">All</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="employment_jtft" value="jtft"
-                               class="emp emp-type">
-                        <label for="employment_jtft">Full Time</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="employment_jtpt" value="jtpt"
-                               class="emp emp-type">
-                        <label for="employment_jtpt">Part Time</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="employment_jtct" value="jtct"
-                               class="emp emp-type">
-                        <label for="employment_jtct">Contractor</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="employment_jtin" value="jtin"
-                               class="emp emp-type">
-                        <label for="employment_jtin">Intern</label>
-                    </li>
-                    <li>
-                        <input type="checkbox" id="employment_jtse" value="jtse"
-                               class="emp emp-type">
-                        <label for="employment_jtse">Seasonal / Temp</label>
-                    </li>
-                </ul>
-            </div>
+        {% if SELECTED_MAIN_CATEGORY == 2 %}
+            {% include 'classified/listing/_realEstate_filter.html' %}
+        {% endif %}
 
 
-        </div>
-        <!--/.locations-list-->
-
-        <div class="  list-filter">
-            <h5 class="list-title"><strong><a href="#">Salary Pay Range</a></strong></h5>
-
-
-            <div class="filter-salary filter-content ">
-                <form role="form" class="form-inline ">
-                    <div class="form-group col-sm-4 no-padding">
-                        <input type="text" placeholder="$ 2000 " id="minPrice" class="form-control">
-                    </div>
-                    <div class="form-group col-sm-1 no-padding text-center hidden-xs"> -</div>
-                    <div class="form-group col-sm-4 no-padding">
-                        <input type="text" placeholder="$ 3000 " id="maxPrice" class="form-control">
-                    </div>
-                    <div class="form-group col-sm-3 no-padding">
-                        <button class="btn btn-default pull-right btn-block-xs" type="submit">GO
-                        </button>
-                    </div>
-                </form>
-
-                <div class="clearfix"></div>
-
-                <ul class="mt15">
-                    <li>
-                        <input type="radio" name="pay" id="pay_0" value="0" checked="checked">
-                        <label for="pay_0">Any</label>
-                    </li>
-                    <li>
-                        <input type="radio" name="pay" id="pay_20" value="20">
-                        <label for="pay_20">$20,000+</label>
-                    </li>
-                    <li>
-                        <input type="radio" name="pay" id="pay_40" value="40">
-                        <label for="pay_40">$40,000+</label>
-                    </li>
-                    <li>
-                        <input type="radio" name="pay" id="pay_60" value="60">
-                        <label for="pay_60">$60,000+</label>
-                    </li>
-                    <li>
-                        <input type="radio" name="pay" id="pay_80" value="80">
-                        <label for="pay_80">$80,000+</label>
-                    </li>
-                    <li>
-                        <input type="radio" name="pay" id="pay_100" value="100">
-                        <label for="pay_100">$100,000+</label>
-                    </li>
-                    <li>
-                        <input type="radio" name="pay" id="pay_120" value="120">
-                        <label for="pay_120">$120,000+</label>
-                    </li>
-                </ul>
-            </div>
-            <div style="clear:both"></div>
-        </div>
-        <!--/.list-filter-->
-
+        {% if SELECTED_MAIN_CATEGORY == 3 %}
+            {% include 'classified/listing/_employment_filter.html' %}
+        {% endif %}
 
 
         <div style="clear:both"></div>
+
+
+
+
     </div>
 
     <!--/.categories-list-->

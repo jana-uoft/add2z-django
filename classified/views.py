@@ -4,7 +4,8 @@ from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from pypostalcode import PostalCodeDatabase
 from django.shortcuts import redirect
-
+from datetime import timedelta
+from django.utils import timezone
 
 
 
@@ -28,7 +29,7 @@ def listings(request, filters=None):
     CURRENT_FILTERS = {}
     SELECTED_MAIN_CATEGORY, SELECTED_SUB_CATEGORY, SELECTED_PROVINCE, SELECTED_CITY, SELECTED_OFFER_TYPE = (None,)*5
     MIN_PRICE, MAX_PRICE = "", ""
-    ONE_DAY_CHECKED, SEVEN_DAY_CHECKED, ONE_MONTH_CHECKED, ANY_DAY_CHECKED = (None,)*4
+    ONE_DAY_CHECKED, SEVEN_DAY_CHECKED, ONE_MONTH_CHECKED, ANY_DAY_CHECKED = ("",)*4
     if filters:
         try:
             for param in filters.split("&"):
@@ -53,20 +54,29 @@ def listings(request, filters=None):
                     CURRENT_FILTERS['offer_price__lte'] = value
                     MAX_PRICE = value
                 elif field == 'posted_within':
-                    startDate = date.today()
+                    startDate = timezone.now()
                     if value == "1day":
                         startDate = startDate - timedelta(days=1)
+                        ONE_DAY_CHECKED = "checked"
                     elif value == "7days":
                         startDate = startDate - timedelta(days=7)
+                        SEVEN_DAY_CHECKED = "checked"
                     elif value == "30days":
                         startDate = startDate - timedelta(days=30)
-                    if startDate != date.today() :
-                        CURRENT_FILTERS['created_at__gte'] = startdate
+                        ONE_MONTH_CHECKED = "checked"
+                    if startDate.day != timezone.now().day :
+                        CURRENT_FILTERS['created_at__gte'] = startDate
+                    else:
+                        ANY_DAY_CHECKED = "checked"
                 else:
                     CURRENT_FILTERS[field] = value
         except:
             pass
 
+    # print CURRENT_FILTERS
+
+    if not ONE_DAY_CHECKED and not SEVEN_DAY_CHECKED and not ONE_MONTH_CHECKED:
+        ANY_DAY_CHECKED = "checked"
 
     if not SELECTED_MAIN_CATEGORY:
         try:
@@ -148,15 +158,34 @@ def listings(request, filters=None):
             del CURRENT_FILTERS['city']
             SELECTED_CITY = None
 
+    
 
     NEW_FILTER_STRING = ''
-    for key in ['main_category', 'sub_category', 'province', 'city', 'offer_type', 'offer_price__gte', 'offer_price__lte', 'posted_within']:
+    for key in ['main_category', 'sub_category', 'province', 'city', 'offer_type', 'offer_price__gte', 'offer_price__lte', 'created_at__gte']:
         try:
-            NEW_FILTER_STRING += key+"="+str(CURRENT_FILTERS[key])+"&"
+            if key == 'created_at__gte':
+                days = (timezone.now()-CURRENT_FILTERS[key]).days
+                if days == 1:
+                    days = "1day"
+                elif days == 7:
+                    days = "7days"
+                elif days == 30:
+                    days = "30days"
+                else:
+                    days = "any"
+                NEW_FILTER_STRING += "posted_within="+days+"&"
+            elif key == 'offer_price__gte':
+                value = str(CURRENT_FILTERS[key])
+                NEW_FILTER_STRING += "minPrice="+value+"&"
+            elif key == 'offer_price__lte':
+                value = str(CURRENT_FILTERS[key])
+                NEW_FILTER_STRING += "maxPrice="+value+"&"
+            else:
+                NEW_FILTER_STRING += key+"="+str(CURRENT_FILTERS[key])+"&"
         except:
             continue
 
-
+    print NEW_FILTER_STRING
     return render(request, 'classified/listing/all_listings.html', {'ALL_ADS_AND_METAS': ALL_ADS_AND_METAS,
                                                                     'ALL_ADS_TUPLE': ALL_ADS_TUPLE, 
                                                                     'ALL_TOP_ADS_AND_METAS': ALL_TOP_ADS_AND_METAS,
@@ -171,7 +200,11 @@ def listings(request, filters=None):
                                                                     'MIN_PRICE': MIN_PRICE,
                                                                     'MAX_PRICE': MAX_PRICE,
                                                                     'CURRENT_FILTERS': CURRENT_FILTERS,
-                                                                    'NEW_FILTER_STRING': NEW_FILTER_STRING})
+                                                                    'NEW_FILTER_STRING': NEW_FILTER_STRING,
+                                                                    'ONE_DAY_CHECKED': ONE_DAY_CHECKED,
+                                                                    'SEVEN_DAY_CHECKED': SEVEN_DAY_CHECKED,
+                                                                    'ONE_MONTH_CHECKED': ONE_MONTH_CHECKED,
+                                                                    'ANY_DAY_CHECKED': ANY_DAY_CHECKED})
 
 
 
@@ -229,9 +262,21 @@ def removeFilter(request, filters, remove):
 
 
     NEW_FILTER_STRING = ''
-    for key in ['main_category', 'sub_category', 'province', 'city', 'offer_type', 'offer_price__gte', 'offer_price__lte', 'posted_within']:
+    for key in ['main_category', 'sub_category', 'province', 'city', 'offer_type', 'minPrice', 'maxPrice', 'posted_within']:
         try:
-            NEW_FILTER_STRING += key+"="+str(NEW_FILTERS[key])+"&"
+            if key == 'posted_within':
+                days = (timezone.now()-NEW_FILTERS[key]).days
+                if days == 1:
+                    days = "1day"
+                elif days == 7:
+                    days = "7days"
+                elif days == 30:
+                    days = "30days"
+                else:
+                    days = "any"
+                NEW_FILTER_STRING += "posted_within="+days+"&"
+            else:
+                NEW_FILTER_STRING += key+"="+str(NEW_FILTERS[key])+"&"
         except:
             continue
 
