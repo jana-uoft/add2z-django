@@ -3,58 +3,48 @@
 <!-- this (.mobile-filter-sidebar) part will be position fixed in mobile version -->
 <aside>
     <div class="inner-box">
-
+       <div class="hidden">
+            <input type="text" id="NEW_FILTER_STRING" value="{{ NEW_FILTER_STRING }}">
+        </div>
 
         <div class="categories-list  list-filter">
             <h5 class="list-title"><strong><a href="{% url 'classified:all-listings' %}">Category</a></strong></h5>
-            <ul class=" list-unstyled long-list">
+            <ul class=" list-unstyled long-list" id="main_cat">
                 {% for main_cat in MAIN_CATEGORIES %}
-                {% with cat=main_cat.id|stringformat:"i"%}
-                {% if "main_category="|add:cat not in NEW_FILTERS %}
-                {% with new_filter="main_category="|add:cat %}
-                {% with filters=NEW_FILTERS|filter_url:new_filter %}
-                <li><a href='{% url "classified:filter-listings" filters %}'>
-                {% endwith %}
-                {% endwith %}
-                {% else %}
-                <li><a href='{% url "classified:filter-listings" NEW_FILTERS %}'>
-                {% endif %}
-                {% endwith %}
+                    {% with cat=main_cat.id|stringformat:"i"%}
+                    {% with current_fitler="main_category="|add:cat %}
+                        <li value='{{CURRENT_FILTERS|filter_url:current_fitler}}'><a>
 
-                    {% if SELECTED_MAIN_CATEGORY == main_cat %}
-                    <span class="title" style="font-weight: 700; color: #000;">{{main_cat.name}}</span>
-                    <span class="count pull-right" style="font-weight: 700; color: #000;">&nbsp;({{main_cat.count}})</span>
-
-                    <ul class=" list-unstyled long-list">
-                        {% for sub_cat in SUB_CATEGORIES %}
-                        {% with cat=sub_cat.id|stringformat:"i"%}
-                        {% if 'sub_category'|add:cat not in NEW_FILTERS %}
-                        {% with new_filter="sub_category="|add:cat %}
-                        {% with filters=NEW_FILTERS|filter_url:new_filter %}
-                        <li><a href='{% url "classified:filter-listings" filters %}'>
-                        {% endwith %}
-                        {% endwith %}
-                        {% else %}
-                        <li><a href='{% url "classified:filter-listings" NEW_FILTERS %}'>
-                            {% endif %}
-                            {% endwith %}
-
-                            {% if SELECTED_SUB_CATEGORY == sub_cat %}
-                            <span class="title" style="font-weight: 700; color: #000;">{{sub_cat.name}}</span>
-                            <span class="count pull-right" style="font-weight: 700; color: #000;">&nbsp;({{sub_cat.count}})</span>
+                            {% if SELECTED_MAIN_CATEGORY == main_cat.id %}
+                                <span class="title" style="font-weight: 700; color: #000;">{{main_cat.name}}</span>
+                                <span class="count pull-right" style="font-weight: 700; color: #000;">&nbsp;({{main_cat.count}})</span>
                             {% else %}
-                            <span class="title">{{sub_cat.name}}</span>
-                            <span class="count pull-right">&nbsp;({{sub_cat.count}})</span>
+                                <span class="title">{{main_cat.name}}</span>
+                                <span class="count pull-right">&nbsp;({{main_cat.count}})</span>
                             {% endif %}
                         </a></li>
-                        {% endfor %}
-                    </ul>
-
-                    {% else %}
-                    <span class="title">{{main_cat.name}}</span>
-                    <span class="count pull-right">&nbsp;({{main_cat.count}})</span>
-                {% endif %}
-                </a></li>
+                    {% endwith %}
+                    {% endwith %}
+                            
+                        <ul class="list-unstyled long-list" id="sub_cat">
+                            {% for sub_cat in SUB_CATEGORIES %}
+                                {% if sub_cat.parent_category.id == main_cat.id %}
+                                    {% with cat=sub_cat.id|stringformat:"i"%}
+                                    {% with current_fitler="sub_category="|add:cat %}
+                                    <li value='{{CURRENT_FILTERS|filter_url:current_fitler}}'><a>
+                                        {% if SELECTED_SUB_CATEGORY == sub_cat.id %}
+                                            <span class="title" style="font-weight: 700; color: #000;">{{sub_cat.name}}</span>
+                                            <span class="count pull-right" style="font-weight: 700; color: #000;">&nbsp;({{sub_cat.count}})</span>
+                                        {% else %}
+                                            <span class="title">{{sub_cat.name}}</span>
+                                            <span class="count pull-right">&nbsp;({{sub_cat.count}})</span>
+                                        {% endif %}
+                                    </a></li>
+                                    {% endwith %}
+                                    {% endwith %}
+                                 {% endif %} 
+                            {% endfor %}   
+                        </ul> 
                 {% endfor %}
             </ul>
         </div>
@@ -63,32 +53,26 @@
 
         <div class="locations-list  list-filter">
             <h5 class="list-title"><strong><a href="#">Location</a></strong></h5>
-            <ul class="browse-list list-unstyled long-list">
+            <ul class="browse-list list-unstyled long-list" id="province">
                 {% for province, cities in ALL_LOCATIONS.items %}
-                    {% with new_filter="province="|add:province %}
-                    {% with filters=NEW_FILTERS|filter_url:new_filter %}
+                    {% with current_fitler="province="|add:province %}
                     {% if SELECTED_PROVINCE == province %}
-                    <li><a href='{% url "classified:filter-listings" filters %}' style="font-weight: 700; color: #000;"> {{province}} </a></li>
+                        <li value='{{CURRENT_FILTERS|filter_url:current_fitler}}'><a style="font-weight: 700; color: #000;"> {{province}} </a></li>
+                        <ul class="browse-list list-unstyled long-list" id="city">
+                            {% for city in cities %}
+                                {% with current_fitler="city="|add:city %}
+                                {% if SELECTED_CITY == city %}
+                                    <li value='{{CURRENT_FILTERS|filter_url:current_fitler}}'><a style="font-weight: 700; color: #000;"> {{city}} </a></li>
+                                {% else %}
+                                    <li value='{{CURRENT_FILTERS|filter_url:current_fitler}}'><a> {{city}} </a></li>
+                                {% endif %}
+                                {% endwith %}
+                            {% endfor %}
+                        </ul>
                     {% else %}
-                    <li><a href='{% url "classified:filter-listings" filters %}'> {{province}} </a></li>
+                        <li value='{{CURRENT_FILTERS|filter_url:current_fitler}}'><a> {{province}} </a></li>
                     {% endif %}
                     {% endwith %}
-                    {% endwith %}
-                        {% if SELECTED_PROVINCE == province %}
-                        <ul class="browse-list list-unstyled long-list">
-                        {% for city in cities %}
-                            {% with new_filter="city="|add:city %}
-                            {% with filters=NEW_FILTERS|filter_url:new_filter %}
-                            {% if SELECTED_CITY == city %}
-                            <li><a href='{% url "classified:filter-listings" filters %}' style="font-weight: 700; color: #000;"> {{city}} </a></li>
-                            {% else %}
-                            <li><a href='{% url "classified:filter-listings" filters %}'> {{city}} </a></li>
-                            {% endif %}
-                            {% endwith %}
-                            {% endwith %}
-                        {% endfor %}
-                        </ul>
-                        {% endif %}
                 {% endfor %}
             </ul>
         </div>
@@ -97,7 +81,7 @@
         <div class="locations-list  list-filter">
             <h5 class="list-title"><strong><a href="#">Offer Range</a></strong></h5>
 
-            <form role="form" class="form-inline" id="filter_by_price" action="listings" method="GET">
+            <form role="form" class="form-inline" id="filter_by_price" action="listings" method="get">
                 <div class="form-group col-sm-4 no-padding">
                     {% if MIN_PRICE %}
                         <input type="text" placeholder="$ MIN " id="minPrice" oldv={{MIN_PRICE}} class="form-control" value={{MIN_PRICE}} >
@@ -113,9 +97,7 @@
                         <input type="text" placeholder="$ MAX " id="maxPrice" class="form-control " value={{MAX_PRICE}} >
                     {% endif %}
                 </div>
-               <div class="form-group hidden">
-                    <input type="text" id="FILTERS" class="form-control" value="{{ NEW_FILTERS }}">
-                </div>
+
                 <div class="form-group col-sm-3 no-padding">
                     <button class="btn btn-success pull-right btn-block-xs" type="submit">GO
                     </button>
@@ -270,3 +252,6 @@
     <!--/.categories-list-->
 
 </aside>
+
+
+

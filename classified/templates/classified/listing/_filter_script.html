@@ -1,0 +1,159 @@
+{% load filter_url %}
+
+
+<script type="text/javascript">
+    
+
+$('#main_cat li').on('click', function(event){
+	url = $(this).attr('value')
+	// console.log(url);    
+	filter_by_(url)
+});
+
+$('#sub_cat li').on('click', function(event){
+	url = $(this).attr('value')
+	// console.log(url);    
+	filter_by_(url)
+});
+
+
+$('#province li').on('click', function(event){
+	url = $(this).attr('value')
+	// console.log(url);    
+	filter_by_(url)
+});
+
+$('#city li').on('click', function(event){
+	url = $(this).attr('value')
+	// console.log(url);    
+	filter_by_(url)
+});
+
+
+
+function filter_by_(url) {
+	// console.log(url);    
+    $.ajax({
+        url : url,
+        type : "GET", 
+        success : function(json) {
+            // console.log(url);
+            window.location = url;
+        },
+        // error : function(xhr,errmsg,err) {
+        //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        // }
+    });
+};
+
+
+
+$('#active_filter a').on('click', function(event){
+	url = $(this).attr('id')
+	// console.log(url);    
+    $.ajax({
+        url : url,
+        type : "GET", 
+        success : function(json) {
+            // console.log(url);
+            window.location = url;
+        },
+        // error : function(xhr,errmsg,err) {
+        //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        // }
+    });
+});
+
+
+
+$('#filter_by_price').on('submit', function(event){
+    event.preventDefault();
+    filter_by_price();
+});
+
+
+
+// AJAX for filtering by price
+function filter_by_price() {
+    minPrice = $('#minPrice').val()
+    maxPrice = $('#maxPrice').val()
+    if (!minPrice || !$.isNumeric(minPrice)) {
+        minPrice = "";
+        $('#minPrice').val('');
+    } 
+    if (!maxPrice || !$.isNumeric(maxPrice)) {
+        maxPrice = "";
+        $('#maxPrice').val('');
+    } 
+    {% if CURRENT_FILTERS %}
+		url = "{{ CURRENT_FILTERS|filter_url|safe }}"
+	{% else %}
+		url = ""
+	{% endif %}
+
+	if (minPrice && maxPrice){
+		url = url+"&minPrice="+minPrice+"&"+"maxPrice="+maxPrice
+	} else if (minPrice){
+		url = url+"&minPrice="+minPrice
+	} else if (maxPrice) {
+		url = url+"&maxPrice="+maxPrice
+	} 
+	
+	if (url.match("^&")) {
+		   url = url.slice(1)
+		}
+	// console.log(url);
+
+
+	if (url) {
+	    $.ajax({
+	        url : url,
+	        type : "GET",
+	        success : function(json) {
+	            window.location = url;
+	        },
+	        // error : function(xhr,errmsg,err) {
+	        //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+	        // }
+	    });
+	} else {
+		window.location = "/classifieds/listings";
+	}
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+$('#posted_1').on('click', function(event){
+    url = "./"+$('#FILTERS').val()+"posted_within=1day&"
+    $.ajax({
+        url : ""+$('#FILTERS').val()+"posted_within=1day&", // the endpoint
+        type : "GET", // http method
+        // handle a successful response
+        success : function(json) {
+            console.log(url);
+            // window.location = url;
+        },
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            url = "./"+$('#FILTERS').val()
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+
+            // window.location = url;
+        }
+    });
+});
+
+</script>

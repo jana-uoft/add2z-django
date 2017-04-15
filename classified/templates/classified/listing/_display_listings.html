@@ -17,21 +17,19 @@
     </div>
     <!--/.tab-box-->
 
-
+    {% if CURRENT_FILTERS %}
     <div class="listing-filter" style="padding: 5px 0;">
         <div class="pull-left col-sm-12 col-xs-12 ">
-            <div class="breadcrumb-list text-center-xs">
-                {% with active_filters=NEW_FILTERS|active_filter %}
-                {% for key,val in active_filters.items %}
-                    <a class="jobs-s-tag" rel="nofollow" title="{{key}}" 
-                    href='{% url "classified:remove-filter-listings" filters=NEW_FILTERS remove=val %}'>{{key}} </a>
+            <div class="breadcrumb-list text-center-xs" id="active_filter">
+                {% for filter, val in CURRENT_FILTERS|active_filter %}
+                    <a href="{% url 'classified:remove-filter-listings' NEW_FILTER_STRING filter %}" class="jobs-s-tag" rel="nofollow" title="{{key}}">{{val}} </a>
                 {% endfor %}
-                {% endwith %}             
             </div>
         </div>
         <div style="clear:both"></div>
     </div>
     <!--/.listing-filter-->
+    {% endif %}
 
 
     <div class="adds-wrapper">

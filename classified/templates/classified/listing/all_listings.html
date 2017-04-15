@@ -7,6 +7,8 @@
 
 {% block main-content %}
 
+
+
 <div class="container" style="max-width: auto;}">
 
 	<div class="row">
@@ -35,4 +37,9 @@
 
 </div>
 
+{% endblock %}
+
+
+{% block page_specific_scripts %} 
+	{% include 'classified/listing/_filter_script.html' %}
 {% endblock %}

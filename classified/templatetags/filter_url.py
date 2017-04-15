@@ -1,29 +1,54 @@
 from django import template
+import copy
+
+
+
 register = template.Library()
 
 @register.filter
-def filter_url(current_filter, new_filter):
-    new_filter_field = new_filter.split("=")[0]
-    new_filter_value = new_filter.split("=")[1]
+def filter_url(current_filter, new_filter=None):
 
-    NEW_FILTERS = ''
-    if not current_filter:
-        return new_filter
+    result = copy.deepcopy(current_filter)
 
-    for f in current_filter.split("&"):
+    try:
+        field = new_filter.split("=")[0]
+        value = new_filter.split("=")[1]
+    except:
+        pass
+
+    try:
+        if field == 'main_category':
+            del result['sub_category']
+    except:
+        pass
+
+    try:
+        if field == 'province':
+            del result['city']
+    except:
+        pass
+
+    try:
+        del result[field]
+    except:
+        pass
+
+    try:
+        result[field] = value
+    except:
+        pass
+
+    NEW_FILTER_STRING = ''
+    for key in ['main_category', 'sub_category', 'province', 'city', 'offer_type', 'minPrice', 'maxPrice', 'posted_within']:
         try:
-            filter_field = f.split("=")[0]
-            filter_value = f.split("=")[1]
-            if filter_field == new_filter_field:
-                NEW_FILTERS += new_filter+'&'
-            else:
-                NEW_FILTERS += f+'&'
+            NEW_FILTER_STRING += key+"="+str(result[key])+"&"
         except:
-            continue
+            pass
 
-    if new_filter not in NEW_FILTERS:
-        NEW_FILTERS += new_filter+'&'
+    try:
+        if NEW_FILTER_STRING[-1] == "&":
+            return NEW_FILTER_STRING[:-1]
+    except:
+        pass
 
-    if NEW_FILTERS[-1] == "&":
-        return NEW_FILTERS[:-1]
-    return NEW_FILTERS
+    return NEW_FILTER_STRING
