@@ -7,25 +7,18 @@
                 <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
                     <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
                         class="icon-bar"></span> <span class="icon-bar"></span></button>
-                <a href="job-home.html" class="navbar-brand logo logo-title">
+                <a href="{% url 'classified:home' %}" class="navbar-brand logo logo-title" style="padding-top: 5px;">
                     <!-- Original Logo will be placed here  -->
-                    <span class="logo-icon"><img src="{% static 'classified/assets/img/logo_circle.gif' %}" height="40px" width="40px"> </span>
-                    Add2Z<span style="font-size: 24px;"> CLASSIFIEDS </span> </a></div>
+                    <span class="logo-icon"><img src="{% static 'classified/assets/img/logo_circle.gif' %}" height="60px" width="60px"> </span>
+                    Add2Z<span style="font-size: 20px;"> CLASSIFIEDS </span> </a></div>
             <div class="navbar-collapse collapse">
 
-                <ul class="nav navbar-nav navbar-left">
-
-
-                    <li><a href="job-list.html">Browse Jobs</a></li>
-                    <li><a href="">Add Resume</a></li>
-
-                </ul>
-
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="signup.html">Signup</a></li>
+                    <li type="button" class="btn btn-success" onclick="document.location.href='/accounts/login';">Sign In</li>
+                    <li>&nbsp;</li>
+                    <!-- <li><a href="signup.html">Signup</a></li> -->
                     <li class="postadd"><a class="btn btn-block   btn-border btn-post btn-danger"
-                                           href="job-post.html">Post A Job</a></li>
+                                           href="job-post.html">Post Ad</a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->

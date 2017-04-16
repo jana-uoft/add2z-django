@@ -2,66 +2,52 @@
 
 
 <div class="search-row-wrapper" style="background-image: url(); padding: 5px 0px; height: auto">
-    <div class="container text-center">
+    <div class="container text-center" style="padding: 0px">
         <div class="col-sm-3">
-            <input class="form-control keyword" type="text" placeholder="Jobs Title">
+            <input class="form-control keyword" type="text" placeholder="Search for anything...." id="searchParam" value="{{SEARCH_PARAM}}">
         </div>
         <div class="col-sm-3">
-            <select class="form-control" name="category" id="search-category">
-                <option selected="selected" value="">All Categories</option>
-                <option value="111">Accounting</option>
-                <option value="112">Administration &amp; Office Support</option>
-                <option value="113">Agriculture, Animals &amp; Conservation</option>
-                <option value="114">Architecture &amp; Design</option>
-                <option value="115">Banking &amp; Financial Services</option>
-                <option value="116">Communications, Advertising, Arts &amp; Media</option>
-                <option value="117">Community Services</option>
-                <option value="118">Construction</option>
-                <option value="119">Customer Service &amp; Call Centre</option>
-                <option value="123">Defence &amp; Protective Services</option>
-                <option value="120">Education &amp; Training</option>
-                <option value="121">Engineering</option>
-                <option value="122">Executive &amp; General Management</option>
-                <option value="130">Health &amp; Medical</option>
-                <option value="124">Hospitality &amp; Tourism</option>
-                <option value="125">Human Resources &amp; Recruitment</option>
-                <option value="126">Information &amp; Communication Technology (ICT)</option>
-                <option value="127">Insurance &amp; Superannuation</option>
-                <option value="128">Legal</option>
-                <option value="129">Manufacturing</option>
-                <option value="131">Mining &amp; Energy</option>
-                <option value="132">Real Estate &amp; Property</option>
-                <option value="133">Retail</option>
-                <option value="134">Sales</option>
-                <option value="135">Science</option>
-                <option value="136">Sport &amp; Recreation</option>
-                <option value="137">Trades &amp; Services</option>
-                <option value="138">Transport &amp; Logistics</option>
-
-                <option value="Other"> Other</option>
+            <select class="form-control" name="category" id="searchCategory">
+                <option value="">All Categories</option>
+                {% for main_category, sub_categories in AD_CATEGORIES.items %}
+                    {% if SELECTED_MAIN_CATEGORY == main_category.id %}
+                        <option selected value="main_category={{main_category.id}}">{{main_category}}</option>
+                    {% else %}
+                        <option value="main_category={{main_category.id}}">{{main_category}}</option>
+                    {% endif %}
+                    {% for sub_cat in sub_categories %}
+                        {% if SELECTED_SUB_CATEGORY == sub_cat.id %}
+                            <option selected value="sub_category={{sub_cat.id}}"> &nbsp;&nbsp;&nbsp;&nbsp;{{sub_cat}} </option> 
+                        {% else %} 
+                            <option value="sub_category={{sub_cat.id}}"> &nbsp;&nbsp;&nbsp;&nbsp;{{sub_cat}} </option> 
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
             </select>
         </div>
         <div class="col-sm-3">
-            <select class="form-control" name="location" id="id-location">
-                <option selected="selected" value="">All Locations</option>
-                <option value="New York"> New York</option>
-                <option value="South-West"> South West</option>
-                <option value="South-East"> South East</option>
-                <option value="East-England"> East England</option>
-                <option value="East-Midlands"> East Midlands</option>
-                <option value="West-Midlands"> West Midlands</option>
-                <option value="North-East"> North East</option>
-                <option value="North-West"> North West</option>
-                <option value="Scotland"> Scotland</option>
-                <option value="Wales"> Wales</option>
-                <option value="Northern-Ireland"> Northern Ireland</option>
-                <option value="England"> England</option>
-                <option value="UK"> UK</option>
-                <option value="Other-Locations">Other Locations</option>
+            <select class="form-control" name="location" id="searchLocation">
+                <option value="">All Locations</option>
+                {% for province, cities in ALL_LOCATIONS.items %}
+                    {% if SELECTED_PROVINCE == province %}
+                        <option selected value="province={{province}}">{{province}}</option>
+                    {% else %}
+                        <option value="province={{province}}">{{province}}</option>
+                    {% endif %}
+                    {% for city in cities %}
+                        {% if SELECTED_CITY == city %}
+                            <option selected value="city={{city}}"> &nbsp;&nbsp;&nbsp;&nbsp;{{city}}</option>
+                        {% else %}
+                            <option value="city={{city}}"> &nbsp;&nbsp;&nbsp;&nbsp;{{city}}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
             </select>
         </div>
         <div class="col-sm-3">
-            <button class="btn btn-block btn-primary" style="margin-top: 2px;"> Search <i class="fa fa-search"></i></button>
+            <button class="btn btn-block btn-primary" style="margin-top: 2px;" id="filterButton"> Search <i class="fa fa-search"></i></button>
         </div>
     </div>
 </div>
+
+

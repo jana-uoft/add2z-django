@@ -8,28 +8,40 @@ from datetime import timedelta
 from django.utils import timezone
 
 
-
-
-TOP_OF_THE_PAGE_LISTINGS = Advertisement.objects.filter(approved=True, package__name="Top of The Page")
 AD_CATEGORIES = {}
 for sub_category in AdSubCategory.objects.all():
     if sub_category.parent_category in AD_CATEGORIES:
         AD_CATEGORIES[sub_category.parent_category] += [sub_category]
     else:
         AD_CATEGORIES[sub_category.parent_category] = [sub_category]
+pcdb = PostalCodeDatabase()
+ALL_LOCATIONS = {}
+for p in Advertisement.objects.order_by().values('postal_code').distinct():
+    pc = p['postal_code'][:3].upper()
+    location = pcdb[pc]
+    try:
+        ALL_LOCATIONS[location.province] += [location.city.split(" ")[0]]
+    except:
+        ALL_LOCATIONS[location.province] = [location.city.split(" ")[0]]
+
 
 
 def index(request):
+    TOP_OF_THE_PAGE_LISTINGS = Advertisement.objects.filter(approved=True, package__name="Top of The Page")
+
     context = { 'TOP_OF_THE_PAGE_LISTINGS': TOP_OF_THE_PAGE_LISTINGS,
-                'AD_CATEGORIES': AD_CATEGORIES}
+                'AD_CATEGORIES': AD_CATEGORIES,
+                'ALL_LOCATIONS': ALL_LOCATIONS}
+
     return render(request, 'classified/home/home.html', context)
 
 
 def listings(request, filters=None):
     CURRENT_FILTERS = {}
-    SELECTED_MAIN_CATEGORY, SELECTED_SUB_CATEGORY, SELECTED_PROVINCE, SELECTED_CITY, SELECTED_OFFER_TYPE = (None,)*5
+    SELECTED_MAIN_CATEGORY, SELECTED_SUB_CATEGORY, SELECTED_PROVINCE, SELECTED_CITY, SELECTED_OFFER_TYPE = ("",)*5
     MIN_PRICE, MAX_PRICE = "", ""
     ONE_DAY_CHECKED, SEVEN_DAY_CHECKED, ONE_MONTH_CHECKED, ANY_DAY_CHECKED = ("",)*4
+    SEARCH_PARAM = ""
     if filters:
         try:
             for param in filters.split("&"):
@@ -68,27 +80,40 @@ def listings(request, filters=None):
                         CURRENT_FILTERS['created_at__gte'] = startDate
                     else:
                         ANY_DAY_CHECKED = "checked"
+                elif field == 'title__icontains':
+                    SEARCH_PARAM = value
                 else:
                     CURRENT_FILTERS[field] = value
         except:
             pass
 
-    # print CURRENT_FILTERS
+    pcdb = PostalCodeDatabase()
+    ALL_LOCATIONS = {}
+    for p in Advertisement.objects.order_by().values('postal_code').distinct():
+        pc = p['postal_code'][:3].upper()
+        location = pcdb[pc]
+        try:
+            ALL_LOCATIONS[location.province] += [location.city.split(" ")[0]]
+        except:
+            ALL_LOCATIONS[location.province] = [location.city.split(" ")[0]]
+
 
     if not ONE_DAY_CHECKED and not SEVEN_DAY_CHECKED and not ONE_MONTH_CHECKED:
         ANY_DAY_CHECKED = "checked"
 
     if not SELECTED_MAIN_CATEGORY:
         try:
-            del CURRENT_FILTERS['sub_category']
-            SELECTED_SUB_CATEGORY = None
+            SELECTED_MAIN_CATEGORY = AdSubCategory.objects.get(id=SELECTED_SUB_CATEGORY).parent_category.id
         except:
             pass
 
-    if not SELECTED_PROVINCE:
+    if not SELECTED_PROVINCE and SELECTED_CITY:
         try:
-            del CURRENT_FILTERS['city']
-            SELECTED_CITY = None
+            SELECTED_PROVINCE = ""
+            for province, cities in ALL_LOCATIONS.items():
+                if SELECTED_CITY in cities:
+                    SELECTED_PROVINCE = province
+                    break
         except:
             pass
 
@@ -142,15 +167,7 @@ def listings(request, filters=None):
             SELECTED_SUB_CATEGORY = None
 
 
-    pcdb = PostalCodeDatabase()
-    ALL_LOCATIONS = {}
-    for p in Advertisement.objects.order_by().values('postal_code').distinct():
-        pc = p['postal_code'][:3].upper()
-        location = pcdb[pc]
-        try:
-            ALL_LOCATIONS[location.province] += [location.city.split(" ")[0]]
-        except:
-            ALL_LOCATIONS[location.province] = [location.city.split(" ")[0]]
+
 
 
     if SELECTED_CITY:
@@ -185,7 +202,6 @@ def listings(request, filters=None):
         except:
             continue
 
-    print NEW_FILTER_STRING
     return render(request, 'classified/listing/all_listings.html', {'ALL_ADS_AND_METAS': ALL_ADS_AND_METAS,
                                                                     'ALL_ADS_TUPLE': ALL_ADS_TUPLE, 
                                                                     'ALL_TOP_ADS_AND_METAS': ALL_TOP_ADS_AND_METAS,
@@ -204,7 +220,10 @@ def listings(request, filters=None):
                                                                     'ONE_DAY_CHECKED': ONE_DAY_CHECKED,
                                                                     'SEVEN_DAY_CHECKED': SEVEN_DAY_CHECKED,
                                                                     'ONE_MONTH_CHECKED': ONE_MONTH_CHECKED,
-                                                                    'ANY_DAY_CHECKED': ANY_DAY_CHECKED})
+                                                                    'ANY_DAY_CHECKED': ANY_DAY_CHECKED,
+                                                                    'AD_CATEGORIES': AD_CATEGORIES,
+                                                                    'ALL_LOCATIONS': ALL_LOCATIONS,
+                                                                    'SEARCH_PARAM': SEARCH_PARAM})
 
 
 
@@ -223,7 +242,9 @@ def listing(request, listing_id):
         META = None
     return render(request, 'classified/listing/single_listing.html', {'ad': ad,
                                                                 'ALL_PHOTOS': ALL_PHOTOS,
-                                                                'META': META})
+                                                                'META': META,
+                                                                'AD_CATEGORIES': AD_CATEGORIES,
+                                                                'ALL_LOCATIONS': ALL_LOCATIONS})
 
 
 

@@ -1,0 +1,61 @@
+
+<script type="text/javascript">
+    
+
+$('#filterButton').click(function(event){
+	param_filter = $('#searchParam').val();
+	category_filter = $('#searchCategory option:selected').attr('value');
+	location_filter = $('#searchLocation option:selected').attr('value');
+
+	url = ""
+
+	if (param_filter) {
+		url = url + "title__icontains=" + param_filter;
+	}
+
+	if (category_filter) {
+		url = url + "&" + category_filter;
+	}
+
+	if (location_filter) {
+		url = url + "&" + location_filter;
+	}
+
+	if (url.match("^&")) {
+	   url = url.slice(1);
+	}
+
+	console.log(url);    
+
+	if (!url){
+		window.location = "/classifieds/listings";
+	}
+
+	var pathname = window.location.pathname;
+
+	if (!pathname.indexOf("location") >= 0){
+		url = "listings/" + url;
+	}
+
+	if (pathname.indexOf("listings/") >= 0){
+		url = "/classifieds/" + url;
+	}
+
+    $.ajax({
+        url : url,
+        type : "GET", 
+        success : function(json) {
+            // console.log(url);
+            window.location = url;
+        },
+        // error : function(xhr,errmsg,err) {
+        //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        // }
+    });
+
+});
+
+
+
+
+</script>
