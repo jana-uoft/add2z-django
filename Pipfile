@@ -1,3 +1,9 @@
 [[source]]
 url = "https://pypi.python.org/simple"
 verify_ssl = true
+
+[packages]
+django-allauth = "*"
+django-storages = "*"
+Django = "*"
+pypostalcode = "*"

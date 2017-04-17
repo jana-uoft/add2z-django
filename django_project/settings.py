@@ -41,12 +41,6 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'directory',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.twitter',
 )
 
 SITE_ID = 2
