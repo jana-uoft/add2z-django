@@ -1,7 +1,7 @@
 {% load staticfiles %}
 
 
-<div class="search-row-wrapper" style="background-image: url(); padding: 5px 0px; height: auto">
+<div class="search-row-wrapper" style="background-image: url({% static 'classified/assets/img/bg.jpg' %}); padding: 5px 0px; height: auto">
     <div class="container text-center" style="padding: 0px">
         <div class="col-sm-3">
             <input class="form-control keyword" type="text" placeholder="Search for anything...." id="searchParam" value="{{SEARCH_PARAM}}">

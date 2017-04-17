@@ -1,12 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from pypostalcode import PostalCodeDatabase
-from django.shortcuts import redirect
 from datetime import timedelta
 from django.utils import timezone
 
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
+from .forms import *
+
+
+try:
+    user_profile = UserProfile.objects.get(user=request.user)
+except:
+    user_profile = ""
 
 AD_CATEGORIES = {}
 for sub_category in AdSubCategory.objects.all():
@@ -27,16 +36,25 @@ for p in Advertisement.objects.order_by().values('postal_code').distinct():
 
 
 def index(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except:
+        user_profile = ""
     TOP_OF_THE_PAGE_LISTINGS = Advertisement.objects.filter(approved=True, package__name="Top of The Page")
 
     context = { 'TOP_OF_THE_PAGE_LISTINGS': TOP_OF_THE_PAGE_LISTINGS,
                 'AD_CATEGORIES': AD_CATEGORIES,
-                'ALL_LOCATIONS': ALL_LOCATIONS}
+                'ALL_LOCATIONS': ALL_LOCATIONS,
+                'user_profile': user_profile}
 
     return render(request, 'classified/home/home.html', context)
 
 
 def listings(request, filters=None):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except:
+        user_profile = ""
     CURRENT_FILTERS = {}
     SELECTED_MAIN_CATEGORY, SELECTED_SUB_CATEGORY, SELECTED_PROVINCE, SELECTED_CITY, SELECTED_OFFER_TYPE = ("",)*5
     MIN_PRICE, MAX_PRICE = "", ""
@@ -223,7 +241,8 @@ def listings(request, filters=None):
                                                                     'ANY_DAY_CHECKED': ANY_DAY_CHECKED,
                                                                     'AD_CATEGORIES': AD_CATEGORIES,
                                                                     'ALL_LOCATIONS': ALL_LOCATIONS,
-                                                                    'SEARCH_PARAM': SEARCH_PARAM})
+                                                                    'SEARCH_PARAM': SEARCH_PARAM,
+                                                                    'user_profile': user_profile})
 
 
 
@@ -231,6 +250,10 @@ def listings(request, filters=None):
 
 
 def listing(request, listing_id):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except:
+        user_profile = ""
     ad = Advertisement.objects.get(pk=listing_id)
     ALL_PHOTOS = ad.photos.split(",")
     try :
@@ -244,7 +267,8 @@ def listing(request, listing_id):
                                                                 'ALL_PHOTOS': ALL_PHOTOS,
                                                                 'META': META,
                                                                 'AD_CATEGORIES': AD_CATEGORIES,
-                                                                'ALL_LOCATIONS': ALL_LOCATIONS})
+                                                                'ALL_LOCATIONS': ALL_LOCATIONS,
+                                                                'user_profile': user_profile})
 
 
 
@@ -313,3 +337,45 @@ def removeFilter(request, filters, remove):
 
 
 
+
+
+
+
+
+@login_required(login_url="/classifieds/accounts/login/", redirect_field_name=None)
+def profile(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except:
+        user_profile = ""
+    return render(request, 'classified/account/profile_home.html', {'user_profile': user_profile,
+                                                                    'AD_CATEGORIES': AD_CATEGORIES,
+                                                                    'ALL_LOCATIONS': ALL_LOCATIONS,})
+
+
+
+
+def sign_in(request):
+    pass
+
+
+def sign_out(request):
+    pass
+
+
+def register(request):
+    form = UserForm()
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data["password"])
+            user.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+
+            return redirect('classified:profile')
+
+    return render(request, 'classified/account/register.html', {'form': form})

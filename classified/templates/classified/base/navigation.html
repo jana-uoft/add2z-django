@@ -14,8 +14,26 @@
             <div class="navbar-collapse collapse">
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li type="button" class="btn btn-success" data-toggle="modal" data-target="#loginModal">Sign In</li>
-                    <li>&nbsp;</li>
+                    {% if not user_profile %}
+                        <li type="button" class="btn btn-success" onclick="window.location.href='/classifieds/accounts/login'">Sign In</li>
+                        <li>&nbsp;</li>
+                        <li type="button" class="btn btn-success" onclick="window.location.href='/classifieds/accounts/register'">Sign Up</li>
+                        <li>&nbsp;</li>
+                    {% else %}
+                        <li><a href="{% url 'classified:sign_out' %}">Sign Out <i class="glyphicon glyphicon-off"></i> </a></li>
+                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span>{{user_profile}}</span> <i class="icon-user fa"></i> <i class=" icon-down-open-big fa"></i></a>
+                            <ul class="dropdown-menu user-menu">
+                                <li class="active"><a href="account-home.html"><i class="icon-home"></i> Personal Home </a> </li>
+                                <li><a href="account-myads.html"><i class="icon-th-thumb"></i> My ads </a> </li>
+                                <li><a href="account-favourite-ads.html"><i class="icon-heart"></i> Favourite ads </a> </li>
+                                <li><a href="account-saved-search.html"><i class="icon-star-circled"></i> Saved search </a> </li>
+                                <li><a href="account-archived-ads.html"><i class="icon-folder-close"></i> Archived ads </a> </li>
+                                <li><a href="account-pending-approval-ads.html"><i class="icon-hourglass"></i> Pending approval </a> </li>
+                                <li><a href="statements.html"><i class=" icon-money "></i> Payment history </a> </li>
+                            </ul>
+                        </li>
+                    {% endif %}
                     <li class="postadd"><a class="btn btn-block   btn-border btn-post btn-danger"
                                            href="job-post.html">Post Ad</a></li>
                 </ul>
@@ -27,116 +45,3 @@
 </div>
 <!-- /.header -->
 
-
-<!-- Modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body">
-            <div class="panel-intro text-center">
-                <h2 class="logo-title">
-                    <span class="logo-icon">
-                        <img src="{% static 'classified/assets/img/logo_circle.gif' %}" height="120px" width="120px"> </span>
-                        <span style="font-size: 50px;">Add2Z</span><span style="font-size: 30px;"> CLASSIFIEDS </span>
-                </h2>
-            </div>
-            <div class="panel-body">
-                <form action="/classifieds/accounts/login/" method="post"> {% csrf_token %}
-                    <div class="form-group">
-                        <label for="sender-email" class="control-label">Username:</label>
-
-                        <div class="input-icon"><i class="icon-user fa"></i>
-                            <input id="sender-email" type="text" placeholder="Username"
-                                   class="form-control email">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="user-pass" class="control-label">Password:</label>
-
-                        <div class="input-icon"><i class="icon-lock fa"></i>
-                            <input type="password" class="form-control" placeholder="Password"
-                                   id="user-pass">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-primary btn-block" value="Sign In">
-                    </div>
-            
-                    <h5 class="pull-left"> <input type="checkbox" value="true" name="remember" id="remember"> Remember Me ?</h5>
-                    <h5><a class="pull-right" href="forgot-password.html"> Lost Your Password ? </a></h5>
-                </form>
-            </div>
-            <div class="login-box-btm text-center">
-                <h4> Don't have an account? <br>
-                    <a data-toggle="modal" data-dismiss="modal" data-target="#registerModal" class="btn btn-primary btn-block" ><strong>Sign Up !</strong> </a>
-                </h4>
-            </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- Modal -->
-<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="RegisterLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body">
-            <div class="panel-intro text-center">
-                <h2 class="logo-title">
-                    <span class="logo-icon">
-                        <img src="{% static 'classified/assets/img/logo_circle.gif' %}" height="120px" width="120px"> </span>
-                        <span style="font-size: 50px;">Add2Z</span><span style="font-size: 30px;"> CLASSIFIEDS </span>
-                </h2>
-            </div>
-            <div class="panel-body">
-                <form action="/classifieds/accounts/register/" method="post"> {% csrf_token %}
-                    <div class="form-group">
-                        <label for="sender-email" class="control-label">Username:</label>
-
-                        <div class="input-icon"><i class="icon-user fa"></i>
-                            <input id="sender-email" type="text" placeholder="Username"
-                                   class="form-control email">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="user-pass" class="control-label">Password:</label>
-
-                        <div class="input-icon"><i class="icon-lock fa"></i>
-                            <input type="password" class="form-control" placeholder="Password"
-                                   id="user-pass">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="user-pass-confirm" class="control-label">Confirm Password:</label>
-
-                        <div class="input-icon"><i class="icon-lock fa"></i>
-                            <input type="password" class="form-control" placeholder="Confirm Password"
-                                   id="user-pass-confirm">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-primary btn-block" value="Sign Up">
-                    </div>         
-                </form>
-            </div>
-            <div class="login-box-btm text-center">
-                <h4> Already Registered ? <br>
-                    <a data-toggle="modal" data-dismiss="modal" data-target="#loginModal" class="btn btn-primary btn-block" ><strong>Sign In !</strong> </a>
-                </h4>
-            </div>
-      </div>
-    </div>
-  </div>
-</div>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 from django.core.validators import URLValidator
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import RegexValidator
@@ -44,6 +45,20 @@ class UserProfile(models.Model):
     twitter = models.CharField(max_length=25, blank=True, null=True)
     google = models.CharField(max_length=25, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        if self.user.first_name:
+            return self.user.first_name
+        else:
+            return self.user.username
+
+
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+post_save.connect(create_user_profile, sender=User)
 
 
 class AdPackage(models.Model):
