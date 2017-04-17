@@ -6,6 +6,7 @@
 
 {% load static %}
 
+
 {% block main-content %}
 
 
@@ -17,54 +18,51 @@
                 <div class="inner-box">
                     <div class="user-panel-sidebar">
                         <div class="collapse-box">
-                            <h5 class="collapse-title no-border"> My Classified <a href="#MyClassified"
-                                                                                   data-toggle="collapse"
-                                                                                   class="pull-right"><i
-                                    class="fa fa-angle-down"></i></a></h5>
-
-                            <div class="panel-collapse collapse in" id="MyClassified">
+                            <h5 class="collapse-title no-border"> My Account 
+                                <a href="#MyAccount" data-toggle="collapse" class="pull-right"><i class="fa fa-angle-down"></i></a>
+                            </h5>
+                            <div class="panel-collapse collapse in" id="MyAccount">
                                 <ul class="acc-list">
-                                    <li><a class="active" href="account-home.html"><i class="icon-home"></i>
-                                        Personal Home </a></li>
-
+                                    <li><a class="active" href=""><i class="icon-home"></i> My Profile </a></li>
+                                    <li><a href=""><i class="icon-home"></i> Payment History </a></li>
                                 </ul>
                             </div>
                         </div>
                         <!-- /.collapse-box  -->
                         <div class="collapse-box">
-                            <h5 class="collapse-title"> My Ads <a href="#MyAds" data-toggle="collapse"
-                                                                  class="pull-right"><i
-                                    class="fa fa-angle-down"></i></a></h5>
+                            <h5 class="collapse-title"> My Ads 
+                                <a href="#MyAds" data-toggle="collapse" class="pull-right"><i class="fa fa-angle-down"></i></a>
+                            </h5>
 
                             <div class="panel-collapse collapse in" id="MyAds">
                                 <ul class="acc-list">
-                                    <li><a href="account-myads.html"><i class="icon-docs"></i> My ads <span
-                                            class="badge">42</span> </a></li>
-                                    <li><a href="account-favourite-ads.html"><i class="icon-heart"></i>
-                                        Favourite ads <span class="badge">42</span> </a></li>
-                                    <li><a href="account-saved-search.html"><i class="icon-star-circled"></i>
-                                        Saved search <span class="badge">42</span> </a></li>
-                                    <li><a href="account-archived-ads.html"><i class="icon-folder-close"></i>
-                                        Archived ads <span class="badge">42</span></a></li>
-                                    <li><a href="account-pending-approval-ads.html"><i
-                                            class="icon-hourglass"></i> Pending approval <span
-                                            class="badge">42</span></a></li>
-
+                                    <li><a href=""><i class="icon-docs"></i> 
+                                        Active Ads <span class="badge">42</span> 
+                                    </a></li>
+                                    <li><a href=""><i class="icon-heart"></i> 
+                                        Favourite Ads <span class="badge">42</span> 
+                                    </a></li>
+                                    <li><a href=""><i class="icon-hourglass"></i> 
+                                        Pending Approval <span class="badge">42</span>
+                                    </a></li>
+                                    <li><a href=""><i class="icon-hourglass"></i> 
+                                        Expired Ads <span class="badge">42</span>
+                                    </a></li>
                                 </ul>
                             </div>
                         </div>
                         <!-- /.collapse-box  -->
 
                         <div class="collapse-box">
-                            <h5 class="collapse-title"> Terminate Account <a href="#TerminateAccount"
-                                                                             data-toggle="collapse"
-                                                                             class="pull-right"><i
-                                    class="fa fa-angle-down"></i></a></h5>
+                            <h5 class="collapse-title"> Terminate Account 
+                                <a href="#TerminateAccount" data-toggle="collapse" class="pull-right"><i class="fa fa-angle-down"></i></a>
+                            </h5>
 
                             <div class="panel-collapse collapse in" id="TerminateAccount">
                                 <ul class="acc-list">
-                                    <li><a href="account-close.html"><i class="icon-cancel-circled "></i> Close
-                                        account </a></li>
+                                    <li><a href=""><i class="icon-cancel-circled "></i> 
+                                        Close My Account 
+                                    </a></li>
                                 </ul>
                             </div>
                         </div>
@@ -72,19 +70,17 @@
                     </div>
                 </div>
                 <!-- /.inner-box  -->
-
             </aside>
         </div>
         <!--/.page-sidebar-->
+
 
         <div class="col-sm-9 page-content">
             <div class="inner-box">
                 <div class="row">
                     <div class="col-md-5 col-xs-4 col-xxs-12">
-                        <h3 class="no-padding text-center-480 useradmin"><a href=""><img class="userImg"
-                                                                                         src="images/user.jpg"
-                                                                                         alt="user"> Jhon Doe
-                        </a></h3>
+                        <h3 class="no-padding text-center-480 useradmin">
+                            <a href=""><img class="userImg" src="{{user_profile.photo}}" alt="user"> {{user_profile}} </a></h3>
                     </div>
                     <div class="col-md-7 col-xs-8 col-xxs-12">
                         <div class="header-data text-center-xs">
@@ -96,7 +92,7 @@
                                     <i class="fa fa-eye ln-shadow"></i></div>
                                 <div class="mcol-right">
                                     <!-- Number of visitors -->
-                                    <p><a href="#">7000</a> <em>visits</em></p>
+                                    <p><a>7000</a> <em>Visits</em></p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -108,7 +104,7 @@
                                     <i class="icon-th-thumb ln-shadow"></i></div>
                                 <div class="mcol-right">
                                     <!-- Number of visitors -->
-                                    <p><a href="#">12</a><em>Ads</em></p>
+                                    <p><a href="">12</a><em>Ads</em></p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -117,10 +113,10 @@
                             <div class="hdata">
                                 <div class="mcol-left">
                                     <!-- Icon with blue background -->
-                                    <i class="fa fa-user ln-shadow"></i></div>
+                                    <i class="fa fa-heart ln-shadow"></i></div>
                                 <div class="mcol-right">
                                     <!-- Number of visitors -->
-                                    <p><a href="#">18</a> <em>Favorites </em></p>
+                                    <p><a href="">18</a> <em>Favorites </em></p>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -131,79 +127,172 @@
 
             <div class="inner-box">
                 <div class="welcome-msg">
-                    <h3 class="page-sub-header2 clearfix no-padding">Hello Jhon Doe </h3>
-                    <span class="page-sub-header-sub small">You last logged in at: 01-01-2014 12:40 AM [UK time (GMT + 6:00hrs)]</span>
+                    <h3 class="page-sub-header2 clearfix no-padding">Hello {{user_profile}} </h3>
+                    <span class="page-sub-header-sub small">You last logged in at: {{user_profile.user.last_login}} Canada/Estern Time</span>
                 </div>
                 <div id="accordion" class="panel-group">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4 class="panel-title"><a href="#collapseB1" data-toggle="collapse"> My
-                                details </a></h4>
+                            <h4 class="panel-title"><a href="#collapseB1" data-toggle="collapse"> My Details </a></h4>
                         </div>
                         <div class="panel-collapse collapse in" id="collapseB1">
                             <div class="panel-body">
-                                <form class="form-horizontal" role="form">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">First Name</label>
+                                <form method="post">
+                                    {% csrf_token %}
 
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" placeholder="Jhon">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Last name</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" placeholder="Doe">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Email</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="email" class="form-control"
-                                                   placeholder="jhon.deo@example.com">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Address</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" placeholder="..">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="Phone" class="col-sm-3 control-label">Phone</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" id="Phone"
-                                                   placeholder="880 124 9820">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Postcode</label>
-
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" placeholder="1217">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ user_form.first_name.label_tag|title }}
+                                            <div class="input-icon"> <i class="fa-user fa"></i> {{ user_form.first_name }} </div>
+                                            {% for error in user_form.first_name.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
                                         </div>
                                     </div>
 
-                                    <div class="form-group hide"> <!-- remove it if dont need this part -->
-                                        <label class="col-sm-3 control-label">Facebook account map</label>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ user_form.last_name.label_tag|title }}
+                                            <div class="input-icon"> <i class="fa-user fa"></i> {{ user_form.last_name }} </div>
+                                            {% for error in user_form.last_name.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
 
-                                        <div class="col-sm-9">
-                                            <div class="form-control"><a class="link"
-                                                                         href="fb.com">Jhone.doe</a> <a
-                                                    class=""> <i class="fa fa-minus-circle"></i></a></div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ user_form.email.label_tag|title }}
+                                            <div class="input-icon"> <i class="fa-envelope fa"></i> {{ user_form.email }} </div>
+                                            {% for error in user_form.email.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-3 col-sm-9"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-3 col-sm-9">
-                                            <button type="submit" class="btn btn-default">Update</button>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="Id_Profile_Form-Photo">Update Profile Photo:</label>
+                                             <i class="glyphicon glyphicon-folder-open"></i> 
+                                            <input type="file" name="pic" accept="image/*" class="file">
+                                               <div class="btn btn-primary btn-file"> <i class="glyphicon glyphicon-folder-open"></i> 
+                                                    &nbsp;Browse … 
+                                                    <input id="input-upload-img1" type="file" class="file" name="profile_pic">
+                                                </div>
                                         </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <hr>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ address_form.street_no.label_tag|title }}
+                                            <div class="input-icon"> <i class="fa fa-map-marker"></i> {{ address_form.street_no }} </div>
+                                            {% for error in address_form.street_no.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ address_form.street_name.label_tag|title }}
+                                            <div class="input-icon"> <i class="fa fa-map-marker"></i> {{ address_form.street_name }} </div>
+                                            {% for error in address_form.street_name.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ address_form.unit_no.label_tag|title }}
+                                            <div class="input-icon"> <i class="fa fa-map-marker"></i> {{ address_form.unit_no }} </div>
+                                            {% for error in address_form.unit_no.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ address_form.city.label_tag|title }}
+                                            <div class="input-icon"> <i class="fa fa-map-marker"></i> {{ address_form.city }} </div>
+                                            {% for error in address_form.city.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ address_form.postal_code.label_tag|title }}
+                                            <div class="input-icon"> <i class="fa fa-map-marker"></i> {{ address_form.postal_code }} </div>
+                                            {% for error in address_form.postal_code.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ profile_form.phone.label_tag|title }}
+                                            <div class="input-icon"> <i class="fa fa-phone"></i> {{ profile_form.phone }} </div>
+                                            {% for error in profile_form.phone.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <hr>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ profile_form.facebook.label_tag|title }}
+                                            <div class="input-icon"> <i class="fa-facebook fa"></i> {{ profile_form.facebook }} </div>
+                                            {% for error in profile_form.facebook.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ profile_form.twitter.label_tag|title }}
+                                            <div class="input-icon"> <i class="fa-twitter fa"></i> {{ profile_form.twitter }} </div>
+                                            {% for error in profile_form.twitter.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="Id_Linkedin">LinkedIn:</label>
+                                            <div class="input-icon"> <i class="fa-linkedin fa"></i> {{ profile_form.linkedIn }} </div>
+                                            {% for error in profile_form.linkedIn.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ profile_form.google.label_tag|title }}
+                                            <div class="input-icon"> <i class="fa-google fa"></i> {{ profile_form.google }} </div>
+                                            {% for error in profile_form.google.errors %} <p style="color: red">{{ error }} </p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        {% for error in profile_form.non_field_errors %}
+                                          <p style="color: red">{{ error }}</p>
+                                        {% endfor %}
+
+                                        {% for error in address_form.non_field_errors %}
+                                          <p style="color: red">{{ error }}</p>
+                                        {% endfor %}
+
+                                        <div class="form-group" style="text-align: center;">
+                                            <input type="submit" class="btn btn-primary" value="Update">
+                                        </div> 
                                     </div>
                                 </form>
                             </div>
@@ -211,19 +300,16 @@
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4 class="panel-title"><a href="#collapseB2" data-toggle="collapse"> Settings </a>
+                            <h4 class="panel-title"><a href="#collapseB2" data-toggle="collapse"> Change Password </a>
                             </h4>
                         </div>
                         <div class="panel-collapse collapse" id="collapseB2">
                             <div class="panel-body">
                                 <form class="form-horizontal" role="form">
                                     <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox">
-                                                    Comments are enabled on my ads </label>
-                                            </div>
+                                        <label class="col-sm-3 control-label">Current Password</label>
+                                        <div class="col-sm-9">
+                                            <input type="password" class="form-control" placeholder="">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -249,30 +335,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title"><a href="#collapseB3" data-toggle="collapse">
-                                Preferences </a></h4>
-                        </div>
-                        <div class="panel-collapse collapse" id="collapseB3">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">
-                                                I want to receive newsletter. </label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">
-                                                I want to receive advice on buying and selling. </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
                 <!--/.row-box End-->
 

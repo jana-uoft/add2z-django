@@ -19,12 +19,12 @@ CLASSIFIED_CATEGORIES = (('Automotive', 'Automotive'),
 
 class Address(models.Model):
     user = models.OneToOneField(User)
-    street_no = models.CharField(max_length=5)
-    street_name = models.CharField(max_length=100)
+    street_no = models.CharField(max_length=5, null=True)
+    street_name = models.CharField(max_length=100, null=True)
     unit_no = models.CharField(max_length=10, blank=True, null=True)
-    city = models.CharField(max_length=20)
-    postal_code = models.CharField(max_length=7, validators=[RegexValidator(r'^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvxy] ?[0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvxy][0-9]$', "Invalid Postal Code")])
-    country = models.CharField(max_length=20, default="Canada")
+    city = models.CharField(max_length=20, null=True)
+    postal_code = models.CharField(max_length=7, validators=[RegexValidator(r'^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy][0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvxy] ?[0-9][ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvxy][0-9]$', "Invalid Postal Code")], null=True)
+    country = models.CharField(max_length=20, default="Canada", null=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
@@ -40,9 +40,10 @@ class PaymentMethod(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     phone =  models.CharField(max_length=15, blank=True, null=True)
-    photo = models.TextField(validators=[URLValidator()], blank=True, null=True)
+    photo = models.TextField(validators=[URLValidator()], blank=True, default='http://localhost:8000/static/classified/assets/img/profile_photo_unknown.gif')
     facebook = models.CharField(max_length=25, blank=True, null=True)
     twitter = models.CharField(max_length=25, blank=True, null=True)
+    linkedIn = models.CharField(max_length=25, blank=True, null=True)
     google = models.CharField(max_length=25, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -54,11 +55,13 @@ class UserProfile(models.Model):
 
 
 
-def create_user_profile(sender, instance, created, **kwargs):
+def create_user_profile_and_address(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
+        Address.objects.create(user=instance)
 
-post_save.connect(create_user_profile, sender=User)
+post_save.connect(create_user_profile_and_address, sender=User)
+
 
 
 class AdPackage(models.Model):

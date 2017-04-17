@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^accounts/login/$', views.sign_in, name='sign_in'),
     url(r'^accounts/register/$', views.register, name='register'),
     url(r'^accounts/profile/$', views.profile, name='profile'),
-    url(r'^accounts/profile/$', views.sign_out, name='sign_out'),
+    url(r'^accounts/logout/$', views.sign_out, name='sign_out'),
 
 ]
 

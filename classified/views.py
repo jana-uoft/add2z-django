@@ -344,38 +344,65 @@ def removeFilter(request, filters, remove):
 
 @login_required(login_url="/classifieds/accounts/login/", redirect_field_name=None)
 def profile(request):
-    try:
-        user_profile = UserProfile.objects.get(user=request.user)
-    except:
-        user_profile = ""
+    user_profile = UserProfile.objects.get(user=request.user)
+    address_profile = Address.objects.get(user=request.user)
+
+    if request.POST:
+        print request.POST
+        user_form = UserUpdateForm(request.POST, prefix="user_form", instance=request.user)
+        profile_form = UserProfileForm(request.POST, prefix="profile_form", instance=user_profile)
+        address_form = AddressForm(request.POST, prefix="address_form", instance=address_profile)
+
+        if user_form.is_valid() and profile_form.is_valid() and address_form.is_valid():
+            user_form.save()
+            address_form.save()
+            profile_form.save()
+            return redirect('classified:profile')
+    else:
+        user_form = UserUpdateForm(initial=user_profile.user.__dict__, prefix="user_form")
+        profile_form = UserProfileForm(initial=user_profile.__dict__, prefix="profile_form")
+        address_form = AddressForm(initial=address_profile.__dict__, prefix="address_form")
+
     return render(request, 'classified/account/profile_home.html', {'user_profile': user_profile,
                                                                     'AD_CATEGORIES': AD_CATEGORIES,
-                                                                    'ALL_LOCATIONS': ALL_LOCATIONS,})
+                                                                    'ALL_LOCATIONS': ALL_LOCATIONS,
+                                                                    'user_form' :user_form,
+                                                                    'profile_form': profile_form,
+                                                                    'address_form': address_form})
 
 
 
 
 def sign_in(request):
-    pass
+    form = UserLoginForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            username = form.cleaned_data["password"]
+            password = form.cleaned_data["password"]
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('classified:profile')        
+
+    return render(request, 'classified/account/login.html', {'form': form})
 
 
 def sign_out(request):
-    pass
+    logout(request)
+    return redirect('classified:sign_in') 
 
 
 def register(request):
-    form = UserForm()
+    form = UserForm(request.POST or None)
     if request.method == 'POST':
-        form = UserForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data["password"])
+            user.active = False
             user.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-
             return redirect('classified:profile')
 
     return render(request, 'classified/account/register.html', {'form': form})

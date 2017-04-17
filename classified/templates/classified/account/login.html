@@ -1,0 +1,66 @@
+{% extends 'classified/base/base.html' %}
+
+{% block title %} 
+	Register
+{% endblock %}
+
+{% load static %}
+
+
+{% block main-content %}
+
+
+<div class="container" style="padding-top: 10px;">
+    <div class="row">
+        <div class="col-sm-5 login-box">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form method="post">
+					    {% csrf_token %}
+					    {% for field in form %}
+						    <div class="form-group">
+						        {{ field.label_tag }}
+
+						        <div class="input-icon">
+							        {% if field.name == 'email' or field.name == 'username' %}
+							        	<i class="icon-user fa"></i>
+							        {% else %}
+										<i class="icon-lock fa"></i>
+							        {% endif %}
+										
+									{{ field }}
+								</div>
+
+						        {% for error in field.errors %}
+						          <p style="color: red">{{ error }}</p>
+						        {% endfor %}
+					        </div>
+						
+					    {% endfor %}
+
+				        {% for error in form.non_field_errors %}
+				          <p style="color: red">{{ error }}</p>
+				        {% endfor %}
+
+					    <div class="form-group" style="text-align: center;">
+					        <input type="submit" class="btn btn-primary" value="Login">
+					    </div> 
+                    </form>
+                </div>
+                <div class="panel-footer">
+                    <div class="checkbox ">
+                    	<p class="text-center"><a href=""> Lost Your Password? </a>  </p>
+                    </div>
+                    <div style=" clear:both"></div>
+                </div>
+            </div>
+            <div class="login-box-btm text-center">
+                <p> Don't Have An Account? <br>
+                    <a href="{% url 'classified:register' %}"><strong>Sign Up !</strong> </a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
