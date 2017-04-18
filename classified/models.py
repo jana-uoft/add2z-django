@@ -18,7 +18,7 @@ CLASSIFIED_CATEGORIES = (('Automotive', 'Automotive'),
 
 
 class Address(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     street_no = models.CharField(max_length=5, null=True)
     street_name = models.CharField(max_length=100, null=True)
     unit_no = models.CharField(max_length=10, blank=True, null=True)
@@ -29,16 +29,16 @@ class Address(models.Model):
 
 
 class PaymentMethod(models.Model):
-    user = models.ForeignKey(User)
-    card_no = models.CharField(max_length=20)
-    card_type = models.CharField(max_length=20)
-    cvc_no = models.CharField(max_length=3)
-    billing_address = models.OneToOneField(Address)
-    updated_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    card_no = models.CharField(max_length=20, null=True)
+    card_type = models.CharField(max_length=20, null=True)
+    cvc_no = models.CharField(max_length=3, null=True)
+    billing_address = models.OneToOneField(Address, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone =  models.CharField(max_length=15, blank=True, null=True)
     photo = models.TextField(validators=[URLValidator()], blank=True, default='http://localhost:8000/static/classified/assets/img/profile_photo_unknown.gif')
     facebook = models.CharField(max_length=25, blank=True, null=True)
@@ -54,13 +54,6 @@ class UserProfile(models.Model):
             return self.user.username
 
 
-
-def create_user_profile_and_address(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
-        Address.objects.create(user=instance)
-
-post_save.connect(create_user_profile_and_address, sender=User)
 
 
 
@@ -152,12 +145,12 @@ class AdvertisementMeta(models.Model):
 
 
 class Transaction(models.Model):
-    user = models.ForeignKey(User)
-    date = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True, null=True)
     description = models.TextField(blank=True, null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    payment_method = models.OneToOneField(PaymentMethod)
-    item = models.CharField(max_length=25)
+    payment_method = models.OneToOneField(PaymentMethod, null=True)
+    item = models.CharField(max_length=25, null=True)
     approved = models.BooleanField(default=False)
 
     def __str__(self):
@@ -199,7 +192,7 @@ class Business(models.Model):
 
 
 class Review(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=1000, blank=True, null=True)
     text = models.TextField(blank=True, null=True)
     business = models.ForeignKey(Business)
@@ -212,7 +205,7 @@ class Review(models.Model):
 
 
 class Event(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=1000)
@@ -229,3 +222,16 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+
+
+
+
+def create_user_related_models(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+        Address.objects.create(user=instance)
+
+post_save.connect(create_user_related_models, sender=User)

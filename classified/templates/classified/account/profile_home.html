@@ -1,7 +1,7 @@
 {% extends 'classified/base/base.html' %}
 
 {% block title %} 
-	Register
+    Register
 {% endblock %}
 
 {% load static %}
@@ -137,7 +137,7 @@
                         </div>
                         <div class="panel-collapse collapse in" id="collapseB1">
                             <div class="panel-body">
-                                <form method="post">
+                                <form method="post" enctype="multipart/form-data">
                                     {% csrf_token %}
 
                                     <div class="col-md-6">
@@ -170,13 +170,13 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="Id_Profile_Form-Photo">Update Profile Photo:</label>
-                                             <i class="glyphicon glyphicon-folder-open"></i> 
-                                            <input type="file" name="pic" accept="image/*" class="file">
-                                               <div class="btn btn-primary btn-file"> <i class="glyphicon glyphicon-folder-open"></i> 
-                                                    &nbsp;Browse … 
-                                                    <input id="input-upload-img1" type="file" class="file" name="profile_pic">
+                                            <label class="col-md-3 control-label" for="textarea"> Picture </label>
+                                            <div class="col-md-12">
+                                                <div class="mb10">
+                                                    <input id="input-upload-img1" type="file" class="file"
+                                                           data-preview-file-type="text" name="profile_pic" accept="image/*">
                                                 </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -349,3 +349,16 @@
 
 
 {% endblock %}
+
+
+
+{% block page_specific_scripts %} 
+<script>
+    $("#input-upload-img1").fileinput({
+        'showUpload': false,
+        'showCaption': false,
+        // 'showPreview': false
+    });
+</script>
+{% endblock %}
+

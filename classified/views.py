@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from pypostalcode import PostalCodeDatabase
 from datetime import timedelta
 from django.utils import timezone
-
+from django.core.files.storage import default_storage
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -348,7 +348,6 @@ def profile(request):
     address_profile = Address.objects.get(user=request.user)
 
     if request.POST:
-        print request.POST
         user_form = UserUpdateForm(request.POST, prefix="user_form", instance=request.user)
         profile_form = UserProfileForm(request.POST, prefix="profile_form", instance=user_profile)
         address_form = AddressForm(request.POST, prefix="address_form", instance=address_profile)
@@ -356,7 +355,14 @@ def profile(request):
         if user_form.is_valid() and profile_form.is_valid() and address_form.is_valid():
             user_form.save()
             address_form.save()
-            profile_form.save()
+            if request.FILES['profile_pic']:
+                profile = profile_form.save(commit=False)
+                file_url = upload_image_file(request.FILES['profile_pic'], request.user)
+                profile.photo = file_url
+                print file_url
+                profile.save()
+            else:
+                profile_form.save()
             return redirect('classified:profile')
     else:
         user_form = UserUpdateForm(initial=user_profile.user.__dict__, prefix="user_form")
@@ -370,6 +376,19 @@ def profile(request):
                                                                     'profile_form': profile_form,
                                                                     'address_form': address_form})
 
+
+
+def upload_image_file(file, user):
+    """
+    Upload the user-uploaded file to Google Cloud Storage and retrieve its
+    publicly-accessible URL.
+    """
+    file_name = '/media/user/'+user.username+'/account/profile_photo.jpg'
+    new_file = default_storage.open(file_name, 'wb')
+    new_file.write(file.read())
+    new_file.close()
+    print 'https://storage.googleapis.com/add2z' + file_name
+    return 'https://storage.googleapis.com/add2z' + file_name
 
 
 
