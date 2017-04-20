@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cb65967bdf3a7372749ce6144be4ee63f412aeeac624342fda3a2b58b1c43c15"
+            "sha256": "b59f483a4cced8c30aa2c623d22dcdf49547f1f91956e0234690d91b506e9cd3"
         },
         "requires": {},
         "sources": [
@@ -11,6 +11,43 @@
             }
         ]
     },
-    "default": {},
+    "default": {
+        "Django": {
+            "hash": "sha256:0120b3b60760fb0617848b58aaa9702c0bf963320ed472f0879c5c55ab75b64a",
+            "version": "==1.11"
+        },
+        "django-allauth": {
+            "hash": "sha256:edfff4599cd5431e4af380ddb9fc66e7b923157dcac67cceb5604b3c58003907",
+            "version": "==0.31.0"
+        },
+        "django-storages": {
+            "hash": "sha256:470b67b325abfd7f82362cfcb09cceba19f1f9499b42ace0f998aa75a05297c7",
+            "version": "==1.5.2"
+        },
+        "oauthlib": {
+            "hash": "sha256:b3b9b47f2a263fe249b5b48c4e25a5bce882ff20a0ac34d553ce43cff55b53ac",
+            "version": "==2.0.2"
+        },
+        "pypostalcode": {
+            "hash": "sha256:452ad9953b782ec94ca6b7903c27c261031ed185aac8bb6b7b470b52de889d4b",
+            "version": "==0.3.4"
+        },
+        "python-openid": {
+            "hash": "sha256:92c51c3ecec846cbec4aeff11f9ff47303d4a63f93b0e6ac0ec02a091fed70ef",
+            "version": "==2.2.5"
+        },
+        "pytz": {
+            "hash": "sha256:d1d6729c85acea5423671382868627129432fba9a89ecbb248d8d1c7a9f01c67",
+            "version": "==2017.2"
+        },
+        "requests": {
+            "hash": "sha256:1a720e8862a41aa22e339373b526f508ef0c8988baf48b84d3fc891a8e237efb",
+            "version": "==2.13.0"
+        },
+        "requests-oauthlib": {
+            "hash": "sha256:50a8ae2ce8273e384895972b56193c7409601a66d4975774c60c2aed869639ca",
+            "version": "==0.8.0"
+        }
+    },
     "develop": {}
 }

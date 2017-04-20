@@ -355,13 +355,14 @@ def profile(request):
         if user_form.is_valid() and profile_form.is_valid() and address_form.is_valid():
             user_form.save()
             address_form.save()
-            if request.FILES['profile_pic']:
+            try:
+                request.FILES['profile_pic']
                 profile = profile_form.save(commit=False)
                 file_url = upload_image_file(request.FILES['profile_pic'], request.user)
                 profile.photo = file_url
                 print file_url
                 profile.save()
-            else:
+            except:
                 profile_form.save()
             return redirect('classified:profile')
     else:
@@ -374,7 +375,8 @@ def profile(request):
                                                                     'ALL_LOCATIONS': ALL_LOCATIONS,
                                                                     'user_form' :user_form,
                                                                     'profile_form': profile_form,
-                                                                    'address_form': address_form})
+                                                                    'address_form': address_form,
+                                                                    'profile_tab_active': "active"})
 
 
 
@@ -383,12 +385,16 @@ def upload_image_file(file, user):
     Upload the user-uploaded file to Google Cloud Storage and retrieve its
     publicly-accessible URL.
     """
-    file_name = '/media/user/'+user.username+'/account/profile_photo.jpg'
+    file_name = '/media/user/'+user.username+'/account/profile_photo.'+str(file).split(".")[-1]
+    try:
+        default_storage.delete(file_name)
+    except:
+        pass
     new_file = default_storage.open(file_name, 'wb')
     new_file.write(file.read())
     new_file.close()
-    print 'https://storage.googleapis.com/add2z' + file_name
     return 'https://storage.googleapis.com/add2z' + file_name
+
 
 
 

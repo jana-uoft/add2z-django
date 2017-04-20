@@ -5,5 +5,7 @@ verify_ssl = true
 [packages]
 django-allauth = "*"
 django-storages = "*"
-Django = "*"
 pypostalcode = "*"
+psycopg2 = "*"
+Django = "*"
+boto = "*"

@@ -117,24 +117,26 @@ STATIC_URL = '/static/'
 # Allow Django from all hosts. This snippet is installed from
 # /var/lib/digitalocean/allow_hosts.py
 
-import os
-import netifaces
 
-# Find out what the IP addresses are at run time
-# This is necessary because otherwise Gunicorn will reject the connections
-def ip_addresses():
-    ip_list = []
-    for interface in netifaces.interfaces():
-        addrs = netifaces.ifaddresses(interface)
-        for x in (netifaces.AF_INET, netifaces.AF_INET6):
-            if x in addrs:
-                ip_list.append(addrs[x][0]['addr'])
-    return ip_list
-
-# Discover our IP address
-ALLOWED_HOSTS+= ip_addresses()
 
 # Override production variables if DJANGO_DEVELOPMENT env variable is set
 if os.environ.get('DJANGO_DEVELOPMENT') is not None:
     from settings_dev import *
 
+else:
+    import os
+    import netifaces
+
+    # Find out what the IP addresses are at run time
+    # This is necessary because otherwise Gunicorn will reject the connections
+    def ip_addresses():
+        ip_list = []
+        for interface in netifaces.interfaces():
+            addrs = netifaces.ifaddresses(interface)
+            for x in (netifaces.AF_INET, netifaces.AF_INET6):
+                if x in addrs:
+                    ip_list.append(addrs[x][0]['addr'])
+        return ip_list
+
+    # Discover our IP address
+    ALLOWED_HOSTS+= ip_addresses()

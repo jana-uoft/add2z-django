@@ -77,7 +77,7 @@ class AddressForm(forms.ModelForm):
     street_name = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': "Street Name"}))
     unit_no = forms.EmailField(required=False, widget=forms.TextInput(attrs={'class': "form-control email", 'placeholder': "Unit No."}))
     city = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': "City"}))
-    postal_code = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': "Postal Code"}))
+    postal_code = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': "XXX XXX"}))
 
 
     class Meta:
